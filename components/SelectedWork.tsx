@@ -10,7 +10,7 @@ interface WorkItem {
   bgColor: string;
 }
 
-const workItems: WorkItem[] = [
+const baseWorkItems: WorkItem[] = [
   {
     id: 'websites',
     category: 'WEBSITES',
@@ -30,13 +30,13 @@ const workItems: WorkItem[] = [
     bgColor: '#E4F4F3', // Pastel Mint/Teal
   },
   {
-    id: 'presentations',
+    id: 'ecommerce',
     category: 'ECOMMERCE',
     description: 'Branded shopping experiences designed to make products easy to explore and buy.',
     bgColor: '#FFF0E5', // Pastel Peach
   },
   {
-    id: 'design-systems',
+    id: 'presentations',
     category: 'PRESENTATIONS',
     description: 'Clear narratives and strong visuals that make ideas easier to understand and remember.',
     bgColor: '#EBEFF5', // Soft Cool Gray
@@ -49,86 +49,147 @@ const workItems: WorkItem[] = [
   },
 ];
 
+// Tripled list for seamless infinite loop (Set 1, Set 2, Set 3)
+const infiniteWorkItems = [...baseWorkItems, ...baseWorkItems, ...baseWorkItems];
+
 export default function SelectedWork() {
   const sliderRef = useRef<HTMLDivElement>(null);
   const scrollPosRef = useRef<number>(0);
+  const animationFrameIdRef = useRef<number | null>(null);
+  const tweenFrameIdRef = useRef<number | null>(null);
+
   const [isHovered, setIsHovered] = useState(false);
   const [isManualScrolling, setIsManualScrolling] = useState(false);
   const [isTouching, setIsTouching] = useState(false);
 
-  // Auto-scroll loop effect
+  // Initialize position in the middle set (Set 2)
   useEffect(() => {
-    let animationFrameId: number;
+    if (!sliderRef.current) return;
+    const container = sliderRef.current;
+    const firstCard = container.querySelector('.work-card') as HTMLElement;
+    const stride = firstCard ? firstCard.offsetWidth + 24 : 1128;
+    const setLength = baseWorkItems.length * stride;
 
+    container.scrollLeft = setLength;
+    scrollPosRef.current = setLength;
+  }, []);
+
+  // Continuous auto-scroll loop effect
+  useEffect(() => {
     const autoScroll = () => {
       if (!sliderRef.current || isHovered || isManualScrolling || isTouching) return;
 
       const container = sliderRef.current;
-      const { scrollWidth, clientWidth } = container;
+      const firstCard = container.querySelector('.work-card') as HTMLElement;
+      const stride = firstCard ? firstCard.offsetWidth + 24 : 1128;
+      const setLength = baseWorkItems.length * stride;
 
-      // Sync accumulator if DOM scroll position diverged (e.g. after manual swipe)
-      if (Math.abs(scrollPosRef.current - container.scrollLeft) > 10) {
+      // Sync accumulator if DOM scroll position diverged (e.g. after manual touch drag)
+      if (Math.abs(scrollPosRef.current - container.scrollLeft) > 15) {
         scrollPosRef.current = container.scrollLeft;
       }
 
-      // If reached the end, wrap smoothly to beginning for continuous loop
-      if (scrollPosRef.current + clientWidth >= scrollWidth - 2) {
-        scrollPosRef.current = 0;
-      } else {
-        // Increment float position (0.8px per frame)
-        scrollPosRef.current += 0.8;
+      // Smooth step increment (0.75px per frame)
+      scrollPosRef.current += 0.75;
+
+      // Seamless infinite wrapping: when entering Set 3, wrap back to Set 2
+      if (scrollPosRef.current >= 2 * setLength) {
+        scrollPosRef.current -= setLength;
       }
 
       container.scrollLeft = scrollPosRef.current;
-
-      animationFrameId = requestAnimationFrame(autoScroll);
+      animationFrameIdRef.current = requestAnimationFrame(autoScroll);
     };
 
     if (!isHovered && !isManualScrolling && !isTouching) {
-      animationFrameId = requestAnimationFrame(autoScroll);
+      animationFrameIdRef.current = requestAnimationFrame(autoScroll);
     }
 
     return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
+      if (animationFrameIdRef.current) {
+        cancelAnimationFrame(animationFrameIdRef.current);
       }
     };
   }, [isHovered, isManualScrolling, isTouching]);
 
-  // Scroll manual handlers (scrolls and centers the exact target slide)
+  // Ultra-smooth cubic-bezier JS easing transition for Next/Prev clicks
+  const animateScrollTo = (targetX: number, duration: number = 800) => {
+    if (!sliderRef.current) return;
+    setIsManualScrolling(true);
+
+    if (tweenFrameIdRef.current) {
+      cancelAnimationFrame(tweenFrameIdRef.current);
+    }
+
+    const container = sliderRef.current;
+    const startX = container.scrollLeft;
+    const distance = targetX - startX;
+    const startTime = performance.now();
+
+    // Smooth easeOutCubic curve
+    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+    const step = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easedProgress = easeOutCubic(progress);
+
+      const currentX = startX + distance * easedProgress;
+      container.scrollLeft = currentX;
+      scrollPosRef.current = currentX;
+
+      if (progress < 1) {
+        tweenFrameIdRef.current = requestAnimationFrame(step);
+      } else {
+        // Animation finished: normalize position to middle set (Set 2) if outside
+        const firstCard = container.querySelector('.work-card') as HTMLElement;
+        const stride = firstCard ? firstCard.offsetWidth + 24 : 1128;
+        const setLength = baseWorkItems.length * stride;
+
+        if (container.scrollLeft >= 2 * setLength) {
+          const normalized = container.scrollLeft - setLength;
+          container.scrollLeft = normalized;
+          scrollPosRef.current = normalized;
+        } else if (container.scrollLeft < setLength) {
+          const normalized = container.scrollLeft + setLength;
+          container.scrollLeft = normalized;
+          scrollPosRef.current = normalized;
+        }
+
+        setIsManualScrolling(false);
+      }
+    };
+
+    tweenFrameIdRef.current = requestAnimationFrame(step);
+  };
+
+  // Scroll manual handlers (Next / Prev)
   const handleScroll = (direction: 'left' | 'right') => {
     if (!sliderRef.current) return;
-    
-    // Pause auto-scroll to allow native smooth scrolling without animation conflicts
-    setIsManualScrolling(true);
 
     const container = sliderRef.current;
     const firstCard = container.querySelector('.work-card') as HTMLElement;
-    const stride = firstCard ? firstCard.offsetWidth + 24 : 1128; // card width + gap
-    const totalCards = workItems.length;
+    const stride = firstCard ? firstCard.offsetWidth + 24 : 1128;
+    const setLength = baseWorkItems.length * stride;
 
-    // Calculate current slide index based on current scroll position
-    const currentIndex = Math.round(container.scrollLeft / stride);
-    let targetIndex = direction === 'left' ? currentIndex - 1 : currentIndex + 1;
-
-    // Loop bounds seamlessly
-    if (targetIndex < 0) {
-      targetIndex = totalCards - 1;
-    } else if (targetIndex >= totalCards) {
-      targetIndex = 0;
+    // Normalize to middle set before calculating target if needed
+    let currentScroll = container.scrollLeft;
+    if (currentScroll < setLength / 2) {
+      currentScroll += setLength;
+      container.scrollLeft = currentScroll;
+      scrollPosRef.current = currentScroll;
+    } else if (currentScroll >= 2.5 * setLength) {
+      currentScroll -= setLength;
+      container.scrollLeft = currentScroll;
+      scrollPosRef.current = currentScroll;
     }
 
-    const targetScroll = targetIndex * stride;
-    scrollPosRef.current = targetScroll;
+    const currentIndex = Math.round(currentScroll / stride);
+    const targetIndex = direction === 'left' ? currentIndex - 1 : currentIndex + 1;
+    const targetX = targetIndex * stride;
 
-    container.scrollTo({
-      left: targetScroll,
-      behavior: 'smooth',
-    });
-
-    setTimeout(() => {
-      setIsManualScrolling(false);
-    }, 600);
+    // 800ms ultra-smooth transition
+    animateScrollTo(targetX, 800);
   };
 
   return (
@@ -170,7 +231,7 @@ export default function SelectedWork() {
           }}
         >
           <div className="slider-track">
-            {workItems.map((item, index) => (
+            {infiniteWorkItems.map((item, index) => (
               <div key={`${item.id}-${index}`} className="work-card">
                 <div
                   className="work-card-media"
@@ -188,6 +249,7 @@ export default function SelectedWork() {
     </section>
   );
 }
+
 
 
 
