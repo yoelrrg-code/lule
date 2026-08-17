@@ -51,20 +51,10 @@ const workItems: WorkItem[] = [
 
 export default function SelectedWork() {
   const sliderRef = useRef<HTMLDivElement>(null);
+  const scrollPosRef = useRef<number>(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isManualScrolling, setIsManualScrolling] = useState(false);
   const [isTouching, setIsTouching] = useState(false);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-
-  // Check scroll boundary status
-  const updateScrollStatus = () => {
-    if (!sliderRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
-    setCanScrollLeft(scrollLeft > 5);
-    const reachedEnd = scrollLeft + clientWidth >= scrollWidth - 10;
-    setCanScrollRight(!reachedEnd);
-  };
 
   // Auto-scroll loop effect
   useEffect(() => {
@@ -74,16 +64,22 @@ export default function SelectedWork() {
       if (!sliderRef.current || isHovered || isManualScrolling || isTouching) return;
 
       const container = sliderRef.current;
-      const { scrollLeft, scrollWidth, clientWidth } = container;
+      const { scrollWidth, clientWidth } = container;
+
+      // Sync accumulator if DOM scroll position diverged (e.g. after manual swipe)
+      if (Math.abs(scrollPosRef.current - container.scrollLeft) > 10) {
+        scrollPosRef.current = container.scrollLeft;
+      }
 
       // If reached the end, wrap smoothly to beginning for continuous loop
-      if (scrollLeft + clientWidth >= scrollWidth - 2) {
-        container.scrollLeft = 0;
+      if (scrollPosRef.current + clientWidth >= scrollWidth - 2) {
+        scrollPosRef.current = 0;
       } else {
-        // Smooth step increment (0.6px per frame)
-        container.scrollLeft += 0.6;
+        // Increment float position (0.8px per frame)
+        scrollPosRef.current += 0.8;
       }
-      updateScrollStatus();
+
+      container.scrollLeft = scrollPosRef.current;
 
       animationFrameId = requestAnimationFrame(autoScroll);
     };
@@ -110,49 +106,35 @@ export default function SelectedWork() {
     const firstCard = container.querySelector('.work-card') as HTMLElement;
     const cardWidth = firstCard ? firstCard.offsetWidth + 24 : 588; // card width + gap
 
+    let targetScroll = container.scrollLeft;
+
     if (direction === 'left') {
       if (container.scrollLeft <= 5) {
-        container.scrollTo({
-          left: container.scrollWidth - container.clientWidth,
-          behavior: 'smooth',
-        });
+        targetScroll = container.scrollWidth - container.clientWidth;
       } else {
-        container.scrollBy({
-          left: -cardWidth,
-          behavior: 'smooth',
-        });
+        targetScroll = container.scrollLeft - cardWidth;
       }
     } else {
       if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
-        container.scrollTo({
-          left: 0,
-          behavior: 'smooth',
-        });
+        targetScroll = 0;
       } else {
-        container.scrollBy({
-          left: cardWidth,
-          behavior: 'smooth',
-        });
+        targetScroll = container.scrollLeft + cardWidth;
       }
     }
 
+    scrollPosRef.current = targetScroll;
+    container.scrollTo({
+      left: targetScroll,
+      behavior: 'smooth',
+    });
+
     setTimeout(() => {
-      updateScrollStatus();
       setIsManualScrolling(false);
     }, 600);
   };
 
   return (
-    <section
-      id="work"
-      className="selected-work-section"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onTouchStart={() => setIsTouching(true)}
-      onTouchEnd={() => {
-        setTimeout(() => setIsTouching(false), 1000);
-      }}
-    >
+    <section id="work" className="selected-work-section">
       <div className="section-header">
         <div>
           <span className="section-tag">Selected Work</span>
@@ -176,19 +158,22 @@ export default function SelectedWork() {
         </div>
       </div>
 
-      <div className="slider-fullbleed-wrapper">
+      <div
+        className="slider-fullbleed-wrapper"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <div
           className="slider-container"
           ref={sliderRef}
-          onScroll={updateScrollStatus}
           onTouchStart={() => setIsTouching(true)}
           onTouchEnd={() => {
             setTimeout(() => setIsTouching(false), 1000);
           }}
         >
           <div className="slider-track">
-            {workItems.map((item) => (
-              <div key={item.id} className="work-card">
+            {workItems.map((item, index) => (
+              <div key={`${item.id}-${index}`} className="work-card">
                 <div
                   className="work-card-media"
                   style={{ backgroundColor: item.bgColor }}
@@ -205,5 +190,6 @@ export default function SelectedWork() {
     </section>
   );
 }
+
 
 
