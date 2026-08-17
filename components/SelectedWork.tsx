@@ -95,7 +95,7 @@ export default function SelectedWork() {
     };
   }, [isHovered, isManualScrolling, isTouching]);
 
-  // Scroll manual handlers (scrolls exactly 1 full slide width)
+  // Scroll manual handlers (scrolls and centers the exact target slide)
   const handleScroll = (direction: 'left' | 'right') => {
     if (!sliderRef.current) return;
     
@@ -104,25 +104,23 @@ export default function SelectedWork() {
 
     const container = sliderRef.current;
     const firstCard = container.querySelector('.work-card') as HTMLElement;
-    const cardWidth = firstCard ? firstCard.offsetWidth + 24 : 588; // card width + gap
+    const stride = firstCard ? firstCard.offsetWidth + 24 : 1128; // card width + gap
+    const totalCards = workItems.length;
 
-    let targetScroll = container.scrollLeft;
+    // Calculate current slide index based on current scroll position
+    const currentIndex = Math.round(container.scrollLeft / stride);
+    let targetIndex = direction === 'left' ? currentIndex - 1 : currentIndex + 1;
 
-    if (direction === 'left') {
-      if (container.scrollLeft <= 5) {
-        targetScroll = container.scrollWidth - container.clientWidth;
-      } else {
-        targetScroll = container.scrollLeft - cardWidth;
-      }
-    } else {
-      if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
-        targetScroll = 0;
-      } else {
-        targetScroll = container.scrollLeft + cardWidth;
-      }
+    // Loop bounds seamlessly
+    if (targetIndex < 0) {
+      targetIndex = totalCards - 1;
+    } else if (targetIndex >= totalCards) {
+      targetIndex = 0;
     }
 
+    const targetScroll = targetIndex * stride;
     scrollPosRef.current = targetScroll;
+
     container.scrollTo({
       left: targetScroll,
       behavior: 'smooth',
