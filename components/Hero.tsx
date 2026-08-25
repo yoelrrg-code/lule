@@ -27,10 +27,10 @@ export default function Hero() {
           <span className="brand-red">LULE</span> connects the right message with a distinctive brand to create a coherent experience.
         </h1>
         <p className="hero-description">
-          We create clear narratives and memorable brand identities across websites, applications and presentations, unified through cohesive design from concept shaping through thoughtful implementation.
+          We create clear narratives and memorable brand identities across digital products, presentations and marketing materials, unified through cohesive design, from concept shaping through thoughtful implementation.
         </p>
         <a href="#contact" className="hero-btn">
-          Tell us about your project
+          Work with LULE
         </a>
       </div>
     </section>

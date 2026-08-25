@@ -11,7 +11,7 @@ export default function Header() {
         <a href="#work">Work</a>
         <a href="#capabilities">Capabilities</a>
         <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+        <a className='cta-button' href="#contact">Contact</a>
       </nav>
     </header>
   );

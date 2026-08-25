@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import SelectedWork from '@/components/SelectedWork';
+import GoodWork from '@/components/GoodWork';
 import { CaseStudiesHeader, CaseStudiesContent } from '@/components/CaseStudies';
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
           <Header />
           <Hero />
           <SelectedWork />
+          <GoodWork />
           <CaseStudiesHeader />
         </div>
       </div>
