@@ -11,10 +11,10 @@ import Footer from '@/components/Footer';
 export default function Home() {
   return (
     <main>
+      <Header />
       {/* Upper Container with Gradient */}
       <div className="upper-gradient-wrapper">
         <div className="lule-container">
-          <Header />
           <Hero />
           <SelectedWork />
           <GoodWork />
