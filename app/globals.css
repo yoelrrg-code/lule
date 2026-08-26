@@ -42,7 +42,7 @@ html, body {
 
 /* Gradient upper wrapper: from top of page down to Case Studies gray box */
 .upper-gradient-wrapper {
-  background: linear-gradient(180deg, #F2F4F6 0%, #FFFFFF 100%);
+  background: linear-gradient(180deg, #F5F7F9 0%, #FFFFFF 100%);
   position: relative;
   width: 100%;
   overflow-x: clip;
