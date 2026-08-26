@@ -3,11 +3,15 @@ import Hero from '@/components/Hero';
 import SelectedWork from '@/components/SelectedWork';
 import GoodWork from '@/components/GoodWork';
 import { CaseStudiesHeader, CaseStudiesContent } from '@/components/CaseStudies';
+import Capabilities from '@/components/Capabilities';
+import About from '@/components/About';
+import ConversationCTA from '@/components/ConversationCTA';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
     <main>
-      {/* Upper Container with Gradient: 180deg #F2F4F6 0% to #FFFFFF 100% */}
+      {/* Upper Container with Gradient */}
       <div className="upper-gradient-wrapper">
         <div className="lule-container">
           <Header />
@@ -18,15 +22,21 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Case Studies Gray Box section starts here */}
+      {/* Case Studies */}
       <CaseStudiesContent />
 
+      {/* Capabilities */}
+      <Capabilities />
+
+      {/* About */}
+      <About />
+
+      {/* Conversation CTA */}
+      <ConversationCTA />
+
       {/* Footer */}
-      <footer className="lule-footer">
-        <div className="lule-container">
-          <p>© {new Date().getFullYear()} LULE. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
+
