@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function ConversationCTA() {
   return (
-    <section className="cta-wrapper-section">
+    <section className="cta-wrapper-section" id="contact">
       <div className="lule-container">
         <div className="cta-card">
           {/* Ambient Blurred Accents */}
