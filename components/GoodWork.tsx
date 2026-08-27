@@ -24,7 +24,7 @@ export default function GoodWork() {
       <div className="good-work-content">
         <p className="good-work-text">
           <span className="good-work-red">Good work is more than how it looks.</span>
-          The message, the visual language and implementation should all work as one cohesive whole.
+          The message, the visual language and implementation should all work together as a unified whole.        
         </p>
       </div>
     </section>

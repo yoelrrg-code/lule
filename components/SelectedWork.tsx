@@ -14,37 +14,37 @@ const baseWorkItems: WorkItem[] = [
   {
     id: 'websites',
     category: 'WEBSITES',
-    description: 'Clear, responsive experiences that connect message, brand and function.',
+    description: 'Clear, responsive experiences where narrative, brand and function come together through visual design.',
     bgColor: '#FCE7EA', // Pastel Pink
   },
   {
     id: 'brand-identity',
     category: 'BRAND IDENTITY',
-    description: 'Memorable identities designed to scale and communicate across all touchpoints.',
+    description: 'Visual identities designed to communicate clearly and work consistently across digital and physical touchpoints.',
     bgColor: '#E6EEFA', // Pastel Lavender/Blue
   },
   {
     id: 'applications',
     category: 'APPLICATIONS',
-    description: 'Clear, cohesive interfaces designed around real workflows and user needs.',
+    description: 'User interfaces where product, brand, usability and design come together to create clear digital experiences.',
     bgColor: '#E4F4F3', // Pastel Mint/Teal
   },
   {
     id: 'ecommerce',
-    category: 'ECOMMERCE',
-    description: 'Branded shopping experiences designed to make products easy to explore and buy.',
+    category: 'ONLINE STORES',
+    description: 'Branded shopping experiences designed to connect products, brand and customer experience.',
     bgColor: '#FFF0E5', // Pastel Peach
   },
   {
     id: 'presentations',
     category: 'PRESENTATIONS',
-    description: 'Clear narratives and strong visuals that make ideas easier to understand and remember.',
+    description: 'Clear narratives and strong visual systems for executive, sales and business presentations.',
     bgColor: '#EBEFF5', // Soft Cool Gray
   },
   {
     id: 'design-systems',
-    category: 'DESIGN SYSTEMS',
-    description: 'Scalable systems that keep digital products consistent, efficient and easy to evolve.',
+    category: 'MARKETING MATERIALS',
+    description: 'Branded assets that extend the identity across digital and physical communication, from social content to print pieces.',
     bgColor: '#E4F4F3', // Pastel Mint/Teal
   },
 ];
