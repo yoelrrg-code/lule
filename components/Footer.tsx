@@ -4,7 +4,7 @@ import Image from 'next/image';
 export default function Footer() {
   return (
     <footer className="lule-main-footer" id="contact">
-      <div className="lule-container footer-container">
+      <div className="lule-container footer-container" data-aos="fade-up">
         {/* Logo Badge */}
         <a href="#" className="footer-logo-link" aria-label="LULE Home">
           <Image src="/logo.svg" alt="LULE Logo" width={88} height={88} />

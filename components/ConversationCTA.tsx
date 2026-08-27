@@ -5,7 +5,7 @@ export default function ConversationCTA() {
   return (
     <section className="cta-wrapper-section" id="contact">
       <div className="lule-container">
-        <div className="cta-card">
+        <div className="cta-card" data-aos="zoom-in">
           {/* Ambient Blurred Accents */}
           <div className="cta-glow">
             <Image src="/circles-cta.svg" alt="CTA Glow" className='cta-glow-circles' width={50} height={50} />

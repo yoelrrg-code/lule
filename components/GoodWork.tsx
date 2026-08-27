@@ -21,7 +21,7 @@ export default function GoodWork() {
         />
       </div>
 
-      <div className="good-work-content">
+      <div className="good-work-content" data-aos="fade-up">
         <p className="good-work-text">
           <span className="good-work-red">Good work is more than how it looks.</span>
           The message, the visual language and implementation should all work together as a unified whole.        

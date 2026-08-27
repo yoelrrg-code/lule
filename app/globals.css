@@ -22,6 +22,22 @@ html {
   scroll-padding-top: 105px;
 }
 
+/* AOS Hardware Acceleration & Overflow Fix */
+[data-aos] {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Restrict fade translation to 20px to prevent layout height shifts & scrollbar creation */
+[data-aos^="fade"][data-aos^="fade"] {
+  transform: translate3d(0, 20px, 0) !important;
+}
+
+[data-aos^="fade"][data-aos^="fade"].aos-animate {
+  transform: translate3d(0, 0, 0) !important;
+}
+
 html, body {
   font-family: var(--font-geist), -apple-system, sans-serif;
   color: var(--color-text-main);

@@ -6,11 +6,11 @@ export default function About() {
     <section className="about-section" id="about">
       <div className="about-text-container">
         <div className="lule-container">
-          <span className="section-tag">About</span>
-          <h2 className="about-title">
+          <span className="section-tag" data-aos="fade-up">About</span>
+          <h2 className="about-title" data-aos="fade-up" data-aos-delay="100">
             More than twenty years shaping ideas into meaningful work
           </h2>
-          <div className="about-content">
+          <div className="about-content" data-aos="fade-up" data-aos-delay="150">
             <p className="about-paragraph">
               <strong className="about-brand-red">LULE</strong> is a founder-led studio built on more than two decades of experience working with international clients across the U.S., Europe and Latin America. Long before remote collaboration became common, working closely with clients and distributed teams was already part of the way projects were developed, refined and delivered.
             </p>
@@ -21,7 +21,7 @@ export default function About() {
         </div>
       </div>
 
-      <div className="about-mountain-wrapper">
+      <div className="about-mountain-wrapper" data-aos="fade-up" data-aos-delay="200">
         <Image
           src="/bg-desk.jpg"
           alt="Mountain landscape background"

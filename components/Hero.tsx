@@ -23,15 +23,17 @@ export default function Hero() {
       </div>
 
       <div className="hero-content">
-        <h1 className="hero-headline">
+        <h1 className="hero-headline" data-aos="fade-up">
           <span className="brand-red">LULE</span> connects the right message with a distinctive brand to create a coherent experience.
         </h1>
-        <p className="hero-description">
+        <p className="hero-description" data-aos="fade-up" data-aos-delay="100">
           We create clear narratives and memorable brand identities across digital products, presentations and marketing materials, unified through cohesive design, from concept shaping through thoughtful implementation.
         </p>
-        <a href="#contact" className="hero-btn">
-          Work with LULE
-        </a>
+        <div data-aos="fade-up" data-aos-delay="200">
+          <a href="#contact" className="hero-btn">
+            Work with LULE
+          </a>
+        </div>
       </div>
     </section>
   );

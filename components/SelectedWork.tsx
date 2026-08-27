@@ -194,7 +194,7 @@ export default function SelectedWork() {
 
   return (
     <section id="work" className="selected-work-section">
-      <div className="section-header">
+      <div className="section-header" data-aos="fade-up">
         <div>
           <span className="section-tag">Selected Work</span>
           <h2 className="section-title">Different needs. One clear, cohesive approach.</h2>
@@ -219,6 +219,8 @@ export default function SelectedWork() {
 
       <div
         className="slider-fullbleed-wrapper"
+        data-aos="fade-up"
+        data-aos-delay="150"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >

@@ -4,17 +4,17 @@ export default function Capabilities() {
   return (
     <section className="capabilities-section" id="capabilities">
       <div className="lule-container">
-        <span className="section-tag">Capabilities</span>
-        <h2 className="capabilities-title">
+        <span className="section-tag" data-aos="fade-up">Capabilities</span>
+        <h2 className="capabilities-title" data-aos="fade-up" data-aos-delay="100">
           Connecting message, brand and experience
         </h2>
-        <p className="capabilities-description">
+        <p className="capabilities-description" data-aos="fade-up" data-aos-delay="150">
           We shape clear narratives and visual direction across everything we create, from brand identities and digital products to presentations and marketing materials, bringing the same thinking from concept through implementation.
         </p>
 
         <div className="capabilities-grid">
           {/* Item 1 */}
-          <div className="capability-card">
+          <div className="capability-card" data-aos="fade-up" data-aos-delay="100">
             <div className="capability-icon">
               <svg width="84" height="72" viewBox="0 0 84 72" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="36" cy="36" r="36" fill="#CF000F"/>
@@ -34,7 +34,7 @@ export default function Capabilities() {
           </div>
 
           {/* Item 2 */}
-          <div className="capability-card">
+          <div className="capability-card" data-aos="fade-up" data-aos-delay="200">
             <div className="capability-icon">
               <svg width="81" height="72" viewBox="0 0 81 72" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="72" height="72" fill="#CF000F"/>
@@ -51,7 +51,7 @@ export default function Capabilities() {
           </div>
 
           {/* Item 3 */}
-          <div className="capability-card">
+          <div className="capability-card" data-aos="fade-up" data-aos-delay="300">
             <div className="capability-icon">
               <svg width="77" height="72" viewBox="0 0 77 72" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M36 0L72.0001 72H0L36 0Z" fill="#CF000F"/>

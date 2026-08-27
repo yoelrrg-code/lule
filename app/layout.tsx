@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import './globals.css';
+import AOSInit from '@/components/AOSInit';
 
 const geist = Geist({
   subsets: ['latin'],
@@ -20,7 +21,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={geist.variable}>
-      <body className={geist.className}>{children}</body>
+      <body className={geist.className}>
+        <AOSInit />
+        {children}
+      </body>
     </html>
   );
 }

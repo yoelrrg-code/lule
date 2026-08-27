@@ -3,7 +3,7 @@ import { ArrowRight } from 'lucide-react';
 
 export function CaseStudiesHeader() {
   return (
-    <div className="case-studies-header">
+    <div className="case-studies-header" data-aos="fade-up">
       <span className="section-tag">Case Studies</span>
       <h2 className="section-title">A closer look at how the work comes together.</h2>
     </div>
@@ -15,7 +15,7 @@ export function CaseStudiesContent() {
     <>
     <div className="case-studies-gray-box">
       <div className="lule-container">
-        <div className="case-study-card">
+        <div className="case-study-card" data-aos="fade-up">
           <span className="case-study-tag">PHYSICIANS CHOICE / BRAND IDENTITY</span>
           <h3 className="case-study-title">Building a brand that could grow beyond the logo</h3>
           <p className="case-study-text">
@@ -29,7 +29,7 @@ export function CaseStudiesContent() {
     </div>
     <div className="case-studies-yellow-box">
       <div className="lule-container">
-        <div className="case-study-card">
+        <div className="case-study-card" data-aos="fade-up">
           <span className="case-study-tag">PreciseMDX / Website & Applications</span>
           <h3 className="case-study-title">Creating consistency across product, brand and communication</h3>
           <p className="case-study-text">
@@ -42,7 +42,7 @@ export function CaseStudiesContent() {
     </div>
     <div className="case-studies-cyan-box">
       <div className="lule-container">
-        <div className="case-study-card">
+        <div className="case-study-card" data-aos="fade-up">
           <span className="case-study-tag">SOFTTEK / PRESENTATIONS</span>
           <h3 className="case-study-title">Turning complex information into clear, persuasive narratives</h3>
           <p className="case-study-text">
