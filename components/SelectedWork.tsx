@@ -59,27 +59,38 @@ export default function SelectedWork() {
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const [isNavOverflowing, setIsNavOverflowing] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   const categoryMenuRef = useRef<HTMLDivElement>(null);
   const activeCategoryIndex = ((virtualIndex % TOTAL_BASE) + TOTAL_BASE) % TOTAL_BASE;
 
-  // Detect if category navigation text overflows container width
+  // Detect desktop viewport (>= 1024px)
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Detect if category navigation text overflows container width (Mobile only)
   useEffect(() => {
     const checkOverflow = () => {
       if (categoryMenuRef.current) {
         const { scrollWidth, clientWidth } = categoryMenuRef.current;
-        setIsNavOverflowing(scrollWidth > clientWidth + 4);
+        setIsNavOverflowing(!isDesktop && scrollWidth > clientWidth + 4);
       }
     };
 
     checkOverflow();
     window.addEventListener('resize', checkOverflow);
     return () => window.removeEventListener('resize', checkOverflow);
-  }, []);
+  }, [isDesktop]);
 
-  // Smoothly slide category menu so active category item is ALWAYS centered
+  // Smoothly slide category menu so active category item is ALWAYS centered (Mobile only)
   useEffect(() => {
-    if (!categoryMenuRef.current) return;
+    if (isDesktop || !categoryMenuRef.current) return;
     const nav = categoryMenuRef.current;
     const activeBtn = nav.querySelector('.category-menu-btn.is-active') as HTMLElement;
 
@@ -94,7 +105,7 @@ export default function SelectedWork() {
         behavior: isTransitioning ? 'smooth' : 'auto',
       });
     }
-  }, [virtualIndex, isTransitioning]);
+  }, [virtualIndex, isTransitioning, isDesktop]);
 
   // Auto-play timer every 4.5 seconds
   useEffect(() => {
@@ -193,15 +204,25 @@ export default function SelectedWork() {
           )}
 
           <nav className="work-category-menu" ref={categoryMenuRef}>
-            {virtualWorkItems.map((item, index) => (
-              <button
-                key={`${item.id}-nav-${index}`}
-                className={`category-menu-btn ${index === virtualIndex ? 'is-active' : ''}`}
-                onClick={() => setVirtualIndex(index)}
-              >
-                {item.category}
-              </button>
-            ))}
+            {isDesktop
+              ? baseWorkItems.map((item, index) => (
+                  <button
+                    key={item.id}
+                    className={`category-menu-btn ${index === activeCategoryIndex ? 'is-active' : ''}`}
+                    onClick={() => handleCategoryClick(index)}
+                  >
+                    {item.category}
+                  </button>
+                ))
+              : virtualWorkItems.map((item, index) => (
+                  <button
+                    key={`${item.id}-nav-${index}`}
+                    className={`category-menu-btn ${index === virtualIndex ? 'is-active' : ''}`}
+                    onClick={() => setVirtualIndex(index)}
+                  >
+                    {item.category}
+                  </button>
+                ))}
           </nav>
 
           {isNavOverflowing && (
