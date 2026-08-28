@@ -165,7 +165,7 @@ html, body {
 .hero-section {
   position: relative;
   padding-top: 322px;
-  padding-bottom: 200px;
+  padding-bottom: 250px;
   z-index: 10;
 }
 
@@ -277,7 +277,7 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 48px;
+  margin-bottom: 25px;
 }
 
 .section-tag {
@@ -327,6 +327,45 @@ html, body {
   cursor: not-allowed;
 }
 
+/* Category Menu Navigation below Heading */
+.work-category-menu {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-top: 24px;
+  margin-bottom: 32px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.work-category-menu::-webkit-scrollbar {
+  display: none;
+}
+
+.category-menu-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  letter-spacing: 2%;
+  text-transform: uppercase;
+  color: var(--color-medium);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.category-menu-btn:hover {
+  color: var(--color-dark);
+}
+
+.category-menu-btn.is-active {
+  color: var(--color-red);
+}
+
 /* Slider Track & Full-Bleed Wrapper */
 .slider-fullbleed-wrapper {
   position: relative;
@@ -335,19 +374,12 @@ html, body {
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
+  overflow: hidden;
 }
 
-.slider-container {
+.slider-track-container {
   width: 100%;
-  overflow-x: auto;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
-  cursor: grab;
-  -webkit-overflow-scrolling: touch;
-}
-
-.slider-container::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  overflow: hidden;
 }
 
 .slider-track {
@@ -356,6 +388,8 @@ html, body {
   width: max-content;
   padding-left: max(24px, calc((100vw - 1104px) / 2));
   padding-right: max(24px, calc((100vw - 1104px) / 2));
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
 }
 
 .work-card {
@@ -364,20 +398,20 @@ html, body {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+  transition: opacity 0.35s ease;
 }
 
-@media (max-width: 768px) {
-  .slider-container {
-    scroll-snap-type: x mandatory;
-  }
-  .work-card {
-    scroll-snap-align: center;
-    scroll-snap-stop: always;
-  }
+.work-card.is-active {
+  opacity: 1;
+}
+
+.work-card:not(.is-active) {
+  opacity: 0.3;
 }
 
 .work-card-media {
-  height: 600px;
+  height: 720px;
   border-radius: 4px;
   margin-bottom: 16px;
   position: relative;
@@ -393,6 +427,7 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  min-height: 48px;
 }
 
 .work-card-tag {
