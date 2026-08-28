@@ -413,6 +413,7 @@ html, body {
   margin: 0;
   border: none;
   left: -25px;
+  width: 22px;
 }
 
 .category-menu-arrow-btn.next-arrow {
@@ -1188,7 +1189,7 @@ html, body {
     margin-bottom: 0;
     overflow: hidden;
     scroll-behavior: smooth;
-    width: 97%;
+    width: 98.5%;
   }
 
   .category-menu-arrow-btn {

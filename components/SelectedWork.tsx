@@ -109,35 +109,32 @@ export default function SelectedWork() {
 
   // Seamless position normalization after 350ms transition completes
   useEffect(() => {
-    const transitionTimer = setTimeout(() => {
-      if (virtualIndex >= 2 * TOTAL_BASE) {
+    if (virtualIndex >= 2 * TOTAL_BASE) {
+      const transitionTimer = setTimeout(() => {
         setIsTransitioning(false);
         setVirtualIndex((prev) => prev - TOTAL_BASE);
-      } else if (virtualIndex < TOTAL_BASE) {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setIsTransitioning(true);
+          });
+        });
+      }, 350);
+
+      return () => clearTimeout(transitionTimer);
+    } else if (virtualIndex < TOTAL_BASE) {
+      const transitionTimer = setTimeout(() => {
         setIsTransitioning(false);
         setVirtualIndex((prev) => prev + TOTAL_BASE);
-      }
-    }, 350);
-
-    return () => clearTimeout(transitionTimer);
-  }, [virtualIndex]);
-
-  // Re-enable transition on the second animation frame after browser has painted transition: none
-  useEffect(() => {
-    if (!isTransitioning) {
-      let raf2: number;
-      const raf1 = requestAnimationFrame(() => {
-        raf2 = requestAnimationFrame(() => {
-          setIsTransitioning(true);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setIsTransitioning(true);
+          });
         });
-      });
+      }, 350);
 
-      return () => {
-        cancelAnimationFrame(raf1);
-        if (raf2) cancelAnimationFrame(raf2);
-      };
+      return () => clearTimeout(transitionTimer);
     }
-  }, [isTransitioning]);
+  }, [virtualIndex]);
 
   const handlePrev = () => {
     setVirtualIndex((prev) => prev - 1);
