@@ -1,14 +1,13 @@
 :root {
-  --color-primary: var(--color-red);
-  --color-text-main: #1D1D1F;
-  --color-text-muted: #6E6E73;
-  --color-dark-btn: #323436;
-  --color-dark-btn-hover: var(--color-red);
+  --color-red: #CF000F;
+  --color-dark: #323436;
+  --color-white: #FFFFFF;
+  --color-medium: #626466;
+  --color-medium-light: #929496;
   --grid-max-width: 1152px; /* 12 columns of 74px + 11 gaps of 24px */
   --grid-gap: 24px;
-  --color-red: #CF000F;
-  --color-title: #323436;
-  --color-nav-text: #525456;
+  --color-medium-lighter: #E2E4E6;
+  --color-light: #F5F7F9;
 }
 
 * {
@@ -40,8 +39,8 @@ html {
 
 html, body {
   font-family: var(--font-geist), -apple-system, sans-serif;
-  color: var(--color-text-main);
-  background-color: #FFFFFF;
+  color: var(--color-medium);
+  background-color: var(--color-white);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -58,7 +57,7 @@ html, body {
 
 /* Gradient upper wrapper: from top of page down to Case Studies gray box */
 .upper-gradient-wrapper {
-  background: linear-gradient(180deg, #F5F7F9 0%, #FFFFFF 100%);
+  background: linear-gradient(180deg, var(--color-light) 0%, var(--color-white) 100%);
   position: relative;
   width: 100%;
   overflow-x: clip;
@@ -146,11 +145,11 @@ html, body {
 
 .lule-nav a.cta-button:hover {
   background-color: var(--color-red);
-  color: white;
+  color: var(--color-white);
 }
 
 .lule-nav a {
-  color: var(--color-nav-text);
+  color: var(--color-medium);
   text-decoration: none;
   font-size: 18px;
   line-height: 18px;
@@ -225,7 +224,7 @@ html, body {
   font-weight: 600;
   line-height: 64px;
   letter-spacing: -1%;
-  color: var(--color-title);
+  color: var(--color-dark);
   margin-bottom: 16px;
 }
 
@@ -237,7 +236,7 @@ html, body {
   font-size: 28px;
   line-height: 36px;
   letter-spacing: 0;
-  color: #525456;
+  color: var(--color-medium);
   margin-bottom: 48px;
   font-weight: 400;
 }
@@ -246,8 +245,8 @@ html, body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-dark-btn);
-  color: #FFFFFF;
+  background-color: var(--color-dark);
+  color: var(--color-white);
   padding: 20px 30px;
   border-radius: 8px;
   font-size: 20px;
@@ -262,7 +261,7 @@ html, body {
 }
 
 .hero-btn:hover {
-  background-color: var(--color-dark-btn-hover);
+  background-color: var(--color-red);
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
@@ -297,7 +296,7 @@ html, body {
   line-height: 44px;
   font-weight: 600;
   letter-spacing: -1%;
-  color: var(--color-title);
+  color: var(--color-dark);
 }
 
 .slider-controls {
@@ -309,19 +308,19 @@ html, body {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background-color: #EBECEE;
+  background-color: var(--color-medium-lighter);
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #55555C;
+  color: var(--color-medium);
   transition: all 0.2s ease;
 }
 
 .slider-btn:hover:not(:disabled) {
-  background-color: #DDE0E5;
-  color: #1D1D1F;
+  background-color: var(--color-red);
+  color: var(--color-white);
 }
 
 .slider-btn:disabled {
@@ -410,7 +409,7 @@ html, body {
   font-size: 18px;
   line-height: 24px;
   letter-spacing: 0;
-  color: #525456;
+  color: var(--color-medium);
   font-weight: 400;
 }
 
@@ -425,7 +424,7 @@ html, body {
 
 /* Full Width Gray Box under Case Studies */
 .case-studies-gray-box {
-  background-color: #F5F7F9;
+  background-color: var(--color-light);
   width: 100%;
   padding-top: 198px;
   padding-bottom: 198px;
@@ -466,7 +465,7 @@ html, body {
   font-weight: 600;
   line-height: 40px;
   letter-spacing: 0;
-  color: #323436;
+  color: var(--color-dark);
   margin-bottom: 10px;
 }
 
@@ -475,7 +474,7 @@ html, body {
   line-height: 24px;
   letter-spacing: 0;
   font-weight: 400;
-  color: #525456;
+  color: var(--color-medium);
   margin-bottom: 20px;
 }
 
@@ -483,7 +482,7 @@ html, body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #1D1D1F;
+  color: var(--color-dark);
   text-decoration: underline;
   font-size: 18px;
   line-height: 24px;
@@ -494,15 +493,6 @@ html, body {
 .case-study-link:hover {
   color: var(--color-red);
   text-decoration: none;
-}
-
-/* Footer */
-.lule-footer {
-  background-color: #F2F4F6;
-  border-top: 1px solid #E5E7EB;
-  padding: 40px 0;
-  font-size: 13px;
-  color: #88888D;
 }
 
 /* Responsive styles */
@@ -576,7 +566,7 @@ html, body {
   line-height: 44px;
   letter-spacing: -1%;
   font-weight: 600;
-  color: var(--color-title);
+  color: var(--color-dark);
 }
 
 .good-work-red {
@@ -601,7 +591,7 @@ html, body {
 
 /* Capabilities Section */
 .capabilities-section {
-  background-color: #FFFFFF;
+  background-color: var(--color-white);
   padding-top: 130px;
   padding-bottom: 200px;
 }
@@ -611,7 +601,7 @@ html, body {
   line-height: 44px;
   font-weight: 600;
   letter-spacing: -1%;
-  color: var(--color-title);
+  color: var(--color-dark);
   margin-top: 15px;
   margin-bottom: 15px;
   max-width: 760px;
@@ -620,7 +610,7 @@ html, body {
 .capabilities-description {
   font-size: 24px;
   line-height: 32px;
-  color: var(--color-text-muted);
+  color: var(--color-medium);
   max-width: 1030px;
   margin-bottom: 48px;
   font-weight: 400;
@@ -647,20 +637,20 @@ html, body {
   font-size: 24px;
   line-height: 32px;
   font-weight: 600;
-  color: var(--color-title);
+  color: var(--color-dark);
 }
 
 .capability-card-text {
   font-size: 18px;
   line-height: 24px;
-  color: var(--color-nav-text);
+  color: var(--color-medium);
   font-weight: 400;
 }
 
 /* About Section */
 .about-section {
   position: relative;
-  background-color: #F5F7F9;
+  background-color: var(--color-light);
   scroll-margin-top: -30px;
 }
 
@@ -676,7 +666,7 @@ html, body {
   line-height: 44px;
   font-weight: 600;
   letter-spacing: -1%;
-  color: var(--color-title);
+  color: var(--color-dark);
   margin-top: 15px;
   margin-bottom: 30px;
 }
@@ -692,7 +682,7 @@ html, body {
   font-size: 24px;
   line-height: 32px;
   letter-spacing: 0;
-  color: var(--color-nav-text);
+  color: var(--color-dark);
   font-weight: 400;
 }
 
@@ -709,7 +699,7 @@ html, body {
   bottom: 0;
   left: 0;
   overflow: hidden;
-  background-color: #DDE0E5;
+  /* background-color: #DDE0E5; */
 }
 
 .about-mountain-img{
@@ -732,7 +722,7 @@ html, body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(180deg, #F5F7F9 0%, rgba(245, 247, 249, 0) 30%, rgba(38, 38, 38, 0.2) 100%);
+  background: linear-gradient(180deg, var(--color-light) 0%, rgba(245, 247, 249, 0) 30%, rgba(38, 38, 38, 0.2) 100%);
   pointer-events: none;
 }
 
@@ -745,7 +735,7 @@ html, body {
 }
 
 .cta-card {
-  background-color: #FFFFFF;
+  background-color: var(--color-white);
   border-radius: 0;
   padding: 118px 48px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
@@ -791,7 +781,7 @@ html, body {
   line-height: 44px;
   font-weight: 600;
   letter-spacing: -1%;
-  color: #323436;
+  color: var(--color-dark);
   max-width: 1100px;
 }
 
@@ -799,8 +789,8 @@ html, body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-dark-btn);
-  color: #FFFFFF;
+  background-color: var(--color-dark);
+  color: var(--color-white);
   padding: 20px 30px;
   border-radius: 8px;
   font-size: 20px;
@@ -815,15 +805,15 @@ html, body {
 }
 
 .cta-card-btn:hover {
-  background-color: var(--color-dark-btn-hover);
+  background-color: var(--color-red);
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* Main Footer */
 .lule-main-footer {
-  background-color: #28292B;
-  color: #FFFFFF;
+  background-color: var(--color-dark);
+  color: var(--color-white);
   padding-top: 250px;
   padding-bottom: 40px;
 }
@@ -855,7 +845,7 @@ html, body {
 }
 
 .footer-nav a {
-  color: #D1D5DB;
+  color: var(--color-medium-light);
   text-decoration: none;
   font-size: 20px;
   line-height: 20px;
@@ -880,7 +870,7 @@ html, body {
   line-height: 24px;
   letter-spacing: 0;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--color-white);
   margin-bottom: 4px;
 }
 
@@ -889,7 +879,7 @@ html, body {
   font-weight: 400;
   line-height: 24px;
   letter-spacing: 0;
-  color: #D2D4D6;
+  color: var(--color-medium-light);
   margin-bottom: 48px;
 }
 
@@ -898,7 +888,7 @@ html, body {
   font-weight: 400;
   line-height: 24px;
   letter-spacing: 2%;
-  color: #D2D4D6;
+  color: var(--color-medium-light);
 }
 
 /* Mobile Menu Button - hidden on desktop */
@@ -906,7 +896,7 @@ html, body {
   display: none;
   background: transparent;
   border: none;
-  color: var(--color-nav-text);
+  color: var(--color-dark);
   cursor: pointer;
   padding: 8px;
   align-items: center;
