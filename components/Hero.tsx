@@ -7,14 +7,14 @@ export default function Hero() {
       {/* Background blurred circles from Image 2 */}
       <div className="circles-animation">
         <Image
-          src="/circles.svg"
+          src="/circles-2.svg"
           width={1360}
           height={970}
           alt="Background blurred color accents"
           className="hero-bg-circles"
         />
         <Image
-          src="/circles.svg"
+          src="/circles-2.svg"
           width={1360}
           height={970}
           alt="Background blurred color accents"

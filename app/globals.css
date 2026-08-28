@@ -57,7 +57,7 @@ html, body {
 
 /* Gradient upper wrapper: from top of page down to Case Studies gray box */
 .upper-gradient-wrapper {
-  background: linear-gradient(180deg, var(--color-light) 0%, var(--color-white) 100%);
+  background: linear-gradient(180deg, var(--color-white) 0%, var(--color-white) 100%);
   position: relative;
   width: 100%;
   overflow-x: clip;
@@ -80,9 +80,8 @@ html, body {
 .lule-header.is-scrolled {
   padding-top: 16px;
   padding-bottom: 16px;
-  background-color: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(12px) !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  background-color: rgba(245, 247, 249, 0.6);
+  backdrop-filter: blur(10px) !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
@@ -238,7 +237,7 @@ html, body {
   letter-spacing: 0;
   color: var(--color-medium);
   margin-bottom: 48px;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .hero-btn {
