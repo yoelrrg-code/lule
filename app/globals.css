@@ -9,7 +9,7 @@
   --color-medium-lighter: #E2E4E6;
   --color-light: #F5F7F9;
   --btn-radius: 0px;
-  --box-radius: 20px;
+  --box-radius: 0px;
 }
 
 * {
