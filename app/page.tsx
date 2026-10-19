@@ -12,11 +12,19 @@ export default function Home() {
   return (
     <main>
       <Header />
-      {/* Upper Container with Gradient */}
+      {/* Upper Container with Hero */}
       <div className="upper-gradient-wrapper">
         <div className="lule-container">
           <Hero />
-          <SelectedWork />
+        </div>
+      </div>
+
+      {/* Selected Work (Full-Width Dark Section) */}
+      <SelectedWork />
+
+      {/* Good Work Section */}
+      <div className="upper-gradient-wrapper">
+        <div className="lule-container">
           <GoodWork />
         </div>
       </div>
