@@ -1,13 +1,15 @@
 :root {
   --color-red: #CF000F;
-  --color-dark: #323436;
+  --color-dark: #222426;
   --color-white: #FFFFFF;
   --color-medium: #626466;
   --color-medium-light: #929496;
-  --grid-max-width: 1152px; /* 12 columns of 74px + 11 gaps of 24px */
+  --grid-max-width: 1180px; /* 12 columns of 74px + 11 gaps of 24px */
   --grid-gap: 24px;
   --color-medium-lighter: #E2E4E6;
   --color-light: #F5F7F9;
+  --btn-radius: 0px;
+  --box-radius: 0px;
 }
 
 * {
@@ -133,9 +135,10 @@ html, body {
 .lule-nav a.cta-button {
   color: var(--color-red);
   padding: 12px 18px;
-  border-radius: 6px;
+  border-radius: var(--btn-radius);
   font-size: 18px;
   font-weight: 500;
+  letter-spacing: 1%;
   text-decoration: none;
   border: 2px solid var(--color-red);
   cursor: pointer;
@@ -164,19 +167,19 @@ html, body {
 /* Hero Section */
 .hero-section {
   position: relative;
-  padding-top: 322px;
-  padding-bottom: 250px;
+  padding-top: 405px;
+  padding-bottom: 350px;
   z-index: 10;
 }
 
 .circles-animation{
   mix-blend-mode: multiply;
   position: absolute;
-  top: 144px;
+  top: 220px;
   right: auto;
-  left: 45%;
+  left: 40%;
   transform: translateX(-50%);
-  width: 1220px;
+  width: 912px;
   height: auto;
   pointer-events: none;
   z-index: 1;
@@ -193,14 +196,14 @@ html, body {
 
 @keyframes blob-2 {
   0% {
-    opacity:0;
+    opacity:0.5;
     transform:rotate(0) scale(0.8)
   }
   50% {
     opacity:1
   }
   100% {
-    opacity:0;
+    opacity:0.5;
     transform:rotate(360deg) scale(0.8)
   }
 }
@@ -215,16 +218,16 @@ html, body {
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 1030px;
+  max-width: 936px;
 }
 
 .hero-headline {
-  font-size: 60px;
-  font-weight: 600;
-  line-height: 64px;
-  letter-spacing: -1%;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 48px;
+  letter-spacing: -2%;
   color: var(--color-dark);
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .hero-headline span.brand-red {
@@ -232,12 +235,13 @@ html, body {
 }
 
 .hero-description {
-  font-size: 28px;
-  line-height: 36px;
+  font-size: 24px;
+  line-height: 32px;
   letter-spacing: 0;
   color: var(--color-medium);
   margin-bottom: 48px;
-  font-weight: 500;
+  font-weight: 400;
+  max-width: 912px;
 }
 
 .hero-btn {
@@ -247,7 +251,7 @@ html, body {
   background-color: var(--color-dark);
   color: var(--color-white);
   padding: 20px 30px;
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   font-size: 20px;
   line-height: 18px;
   font-weight: 600;
@@ -285,18 +289,18 @@ html, body {
 
 .section-tag {
   color: var(--color-red);
-  font-size: 20px;
+  font-size: 18px;
   line-height: 24px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0;
   display: block;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .section-title {
-  font-size: 36px;
-  line-height: 44px;
-  font-weight: 600;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 500;
   letter-spacing: -1%;
   color: var(--color-dark);
 }
@@ -479,7 +483,7 @@ html, body {
 
 .work-card-media {
   height: 720px;
-  border-radius: 4px;
+  border-radius: var(--box-radius);
   margin-bottom: 16px;
   position: relative;
   overflow: hidden;
@@ -516,40 +520,38 @@ html, body {
 
 /* Case Studies Section */
 .case-studies-section {
-  padding-bottom: 60px;
+  background-color: var(--color-light);
+  padding-top: 130px;
+  padding-bottom: 130px;
 }
 
 .case-studies-header {
-  margin-bottom: 48px;
+  margin-bottom: 56px;
 }
 
-/* Full Width Gray Box under Case Studies */
-.case-studies-gray-box {
-  background-color: var(--color-light);
-  width: 100%;
-  padding-top: 198px;
-  padding-bottom: 198px;
-}
-
-.case-studies-yellow-box {
-  background-color: #FFEAC9;
-  width: 100%;
-  padding-top: 198px;
-  padding-bottom: 198px;
-  padding-left: 50%;
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-
-.case-studies-cyan-box {
-  background-color: #DEEFFF;
-  width: 100%;
-  padding-top: 198px;
-  padding-bottom: 198px;
+.case-studies-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 }
 
 .case-study-card {
-  max-width: 550px;
+  background-color: var(--color-white);
+  border-radius: var(--box-radius);
+  padding: 105px 100px 127px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 380px;
+}
+
+.case-study-card.is-right {
+  justify-content: flex-end;
+}
+
+.case-study-card-content {
+  max-width: 420px;
+  width: 100%;
 }
 
 .case-study-tag {
@@ -564,16 +566,16 @@ html, body {
 }
 
 .case-study-title {
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 40px;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 32px;
   letter-spacing: 0;
   color: var(--color-dark);
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .case-study-text {
-  font-size: 16px;
+  font-size: 17px;
   line-height: 24px;
   letter-spacing: 0;
   font-weight: 400;
@@ -584,18 +586,22 @@ html, body {
 .case-study-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  color: var(--color-dark);
-  text-decoration: underline;
-  font-size: 18px;
+  gap: 5px;
+  color: var(--color-medium);
+  font-size: 17px;
   line-height: 24px;
+  letter-spacing: 0;
   font-weight: 500;
+  text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .case-study-link:hover {
   color: var(--color-red);
-  text-decoration: none;
+}
+
+.case-study-link:hover svg{
+  color: var(--color-medium);
 }
 
 /* Responsive styles */
@@ -641,7 +647,7 @@ html, body {
   position: absolute;
   top: 119px;
   right: auto;
-  left: -150px;
+  left: 0;
   width: 860px;
   height: auto;
   pointer-events: none;
@@ -652,14 +658,18 @@ html, body {
   position: relative;
   z-index: 2;
   max-width: 1030px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .good-work-text {
-  font-size: 36px;
-  line-height: 44px;
+  text-align: right;
+  font-size: 32px;
+  line-height: 40px;
   letter-spacing: -1%;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-dark);
+  max-width: 880px;
 }
 
 .good-work-red {
@@ -685,8 +695,8 @@ html, body {
 /* Capabilities Section */
 .capabilities-section {
   background-color: var(--color-white);
-  padding-top: 130px;
-  padding-bottom: 200px;
+  padding-top: 105px;
+  padding-bottom: 155px;
 }
 
 .capabilities-title {
@@ -701,11 +711,13 @@ html, body {
 }
 
 .capabilities-description {
-  font-size: 24px;
-  line-height: 32px;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: 0;
   color: var(--color-medium);
-  max-width: 1030px;
-  margin-bottom: 48px;
+  max-width: 1080px;
+  margin-bottom: 45px;
+  margin-top: 10px;
   font-weight: 400;
 }
 
@@ -718,7 +730,8 @@ html, body {
 .capability-card {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0px;
+  margin-bottom: 15px;
 }
 
 .capability-icon {
@@ -729,13 +742,17 @@ html, body {
 .capability-card-title {
   font-size: 24px;
   line-height: 32px;
-  font-weight: 600;
+  font-weight: 500;
+  letter-spacing: 0;
+  margin-top: 24px;
+  margin-bottom: 8px;
   color: var(--color-dark);
 }
 
 .capability-card-text {
-  font-size: 18px;
+  font-size: 17px;
   line-height: 24px;
+  letter-spacing: 0;
   color: var(--color-medium);
   font-weight: 400;
 }
@@ -748,7 +765,7 @@ html, body {
 }
 
 .about-text-container {
-  padding-top: 140px;
+  padding-top: 110px;
   padding-bottom: 570px;
   position: relative;
   z-index: 2;
@@ -768,7 +785,8 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  max-width: 1030px;
+  max-width: 1080px;
+  margin-top: 24px;
 }
 
 .about-paragraph {
@@ -781,7 +799,7 @@ html, body {
 
 .about-brand-red {
   color: var(--color-red);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .about-mountain-wrapper {
@@ -823,13 +841,13 @@ html, body {
 .cta-wrapper-section {
   position: relative;
   z-index: 20;
-  margin-top: -185px;
+  margin-top: -195px;
   margin-bottom: -185px;
 }
 
 .cta-card {
   background-color: var(--color-white);
-  border-radius: 0;
+  border-radius: var(--box-radius);
   padding: 118px 48px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
   text-align: center;
@@ -854,9 +872,9 @@ html, body {
   height: 500px!important;
   object-fit: contain;
   mix-blend-mode: multiply;
-  opacity: 0.9;
+  opacity: 1;
   position: relative;
-  top: 50%;
+  top: 40%;
   transform: translateY(-50%);
 }
 
@@ -866,16 +884,16 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
+  gap: 44px;
 }
 
 .cta-card-heading {
-  font-size: 36px;
-  line-height: 44px;
-  font-weight: 600;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 500;
   letter-spacing: -1%;
   color: var(--color-dark);
-  max-width: 1100px;
+  max-width: 1180px;
 }
 
 .cta-card-btn {
@@ -885,7 +903,7 @@ html, body {
   background-color: var(--color-dark);
   color: var(--color-white);
   padding: 20px 30px;
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   font-size: 20px;
   line-height: 18px;
   font-weight: 600;
@@ -959,10 +977,10 @@ html, body {
 }
 
 .footer-worldwide {
-  font-size: 20px;
+  font-size: 18px;
   line-height: 24px;
   letter-spacing: 0;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-white);
   margin-bottom: 4px;
 }
@@ -1257,15 +1275,26 @@ html, body {
   }
 
   /* Case Studies Section */
+  .case-studies-section {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
   .case-studies-header {
-    padding-top: 60px;
-    padding-bottom: 32px;
-    margin-bottom: 0;
+    margin-bottom: 36px;
   }
 
   .case-study-card {
-    padding: 0;
+    padding: 60px 36px;
     min-height: auto;
+  }
+
+  .case-study-card.is-right {
+    justify-content: flex-start;
+  }
+
+  .case-study-card-content {
+    max-width: 100%;
   }
 
   .case-study-title {
@@ -1274,27 +1303,8 @@ html, body {
   }
 
   .case-study-text {
-    font-size: 16px;
+    font-size: 15px;
     line-height: 22px;
-  }
-
-  .case-study-link{
-    font-size: 16px;
-  }
-
-  .case-studies-yellow-box{
-    padding-left: 0;
-  }
-
-  .case-studies-gray-box, .case-studies-yellow-box, .case-studies-cyan-box{
-    padding-top: 251px;
-    padding-bottom: 45px;
-  }
-
-  .case-study-tag{
-    font-size: 14px;
-    line-height: 18px;
-    margin-bottom: 15px;
   }
 
   /* Capabilities Section */

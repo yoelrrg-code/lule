@@ -6,14 +6,14 @@ export default function GoodWork() {
     <section className="good-work-section">
       <div className="good-work-circles-animation">
         <Image
-          src="/circles-2.svg"
+          src="/circles-new.svg"
           width={1360}
           height={970}
           alt="Background blurred color accents"
           className="hero-bg-circles"
         />
         <Image
-          src="/circles-2.svg"
+          src="/circles-new.svg"
           width={1360}
           height={970}
           alt="Background blurred color accents"

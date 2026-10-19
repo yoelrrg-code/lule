@@ -7,7 +7,7 @@ export default function About() {
       <div className="about-text-container">
         <div className="lule-container">
           <span className="section-tag" data-aos="fade-up">About</span>
-          <h2 className="about-title" data-aos="fade-up" data-aos-delay="100">
+          <h2 className="section-title" data-aos="fade-up" data-aos-delay="100">
             More than twenty years shaping ideas into meaningful work
           </h2>
           <div className="about-content" data-aos="fade-up" data-aos-delay="150">

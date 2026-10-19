@@ -7,14 +7,14 @@ export default function Hero() {
       {/* Background blurred circles from Image 2 */}
       <div className="circles-animation">
         <Image
-          src="/circles-2.svg"
+          src="/circles-new.svg"
           width={1360}
           height={970}
           alt="Background blurred color accents"
           className="hero-bg-circles"
         />
         <Image
-          src="/circles-2.svg"
+          src="/circles-new.svg"
           width={1360}
           height={970}
           alt="Background blurred color accents"
@@ -29,11 +29,11 @@ export default function Hero() {
         <p className="hero-description" data-aos="fade-up" data-aos-delay="100">
           We create clear narratives and memorable brand identities across digital products, presentations and marketing materials, unified through cohesive design, from concept shaping through thoughtful implementation.
         </p>
-        <div data-aos="fade-up" data-aos-delay="200">
+        {/* <div data-aos="fade-up" data-aos-delay="200">
           <a href="#contact" className="hero-btn">
             Work with LULE
           </a>
-        </div>
+        </div> */}
       </div>
     </section>
   );

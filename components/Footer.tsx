@@ -11,17 +11,17 @@ export default function Footer() {
         </a>
 
         {/* Navigation Links */}
-        <nav className="footer-nav">
+        {/* <nav className="footer-nav">
           <a href="#work">Work</a>
           <a href="#capabilities">Capabilities</a>
           <a href="#about">About</a>
           <a href="#contact">Contact</a>
-        </nav>
+        </nav> */}
 
         {/* Info & Legal */}
         <div className="footer-info">
           <p className="footer-worldwide">Working with clients worldwide.</p>
-          <p className="footer-company">LULE is a brand of LUGAR 921 LLC</p>
+          <p className="footer-company"><strong>LULE</strong> is a brand of LUGAR 921 LLC</p>
           <p className="footer-copyright">© {new Date().getFullYear()} LULE</p>
         </div>
       </div>

@@ -8,7 +8,7 @@ export default function ConversationCTA() {
         <div className="cta-card" data-aos="zoom-in">
           {/* Ambient Blurred Accents */}
           <div className="cta-glow">
-            <Image src="/circles-cta.svg" alt="CTA Glow" className='cta-glow-circles' width={50} height={50} />
+            <Image src="/circles-new.svg" alt="CTA Glow" className='cta-glow-circles' width={50} height={50} />
           </div>
 
           <div className="cta-card-content">
