@@ -316,10 +316,6 @@ html, body {
   margin-bottom: 48px;
 }
 
-.selected-work-title-group {
-  max-width: 820px;
-}
-
 .selected-work-tag {
   color: var(--color-red);
   font-size: 18px;

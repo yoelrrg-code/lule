@@ -261,8 +261,8 @@ export default function SelectedWork() {
       {/* Horizontal Grid Slider */}
       <div
         className="selected-work-slider-viewport"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        // onMouseEnter={() => setIsHovered(true)}
+        // onMouseLeave={() => setIsHovered(false)}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
