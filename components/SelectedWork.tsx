@@ -45,10 +45,26 @@ export default function SelectedWork() {
     const lastSlideWidth = lastSlide.offsetWidth;
 
     // The starting position of the last slide along the track content
-    const lastSlideStart = lastSlideIndex * (slideWidth + SLIDE_GAP);
+    const lastSlideStart = lastSlide.offsetLeft - firstSlide.offsetLeft;
 
-    // Center the last slide precisely within the container when reaching the end
-    const calculatedMax = Math.max(0, lastSlideStart - (slideWidth - lastSlideWidth) / 2);
+    let calculatedMax: number;
+    const isMobile = window.innerWidth < 768;
+
+    if (isMobile) {
+      const containerStyle = window.getComputedStyle(containerRef.current);
+      const paddingRight = parseFloat(containerStyle.paddingRight) || 0;
+      const containerRight = containerRef.current.getBoundingClientRect().right - paddingRight;
+      const lastSlideRight = lastSlide.offsetLeft + lastSlide.offsetWidth;
+      calculatedMax = Math.max(0, lastSlideRight - containerRight);
+    } else {
+      // Desktop: center the last slide precisely within the container when reaching the end
+      calculatedMax = Math.max(
+        0,
+        containerWidth > lastSlideWidth
+          ? lastSlideStart - (containerWidth - lastSlideWidth) / 2
+          : lastSlideStart
+      );
+    }
 
     setMaxScroll(calculatedMax);
     maxScrollRef.current = calculatedMax;
@@ -150,18 +166,21 @@ export default function SelectedWork() {
     });
   };
 
-  // Determine snap positions for each slide ([0, pitch, ..., max])
+  // Determine snap positions for each slide ([0, offset1, ..., max])
   const getSnapPoints = () => {
-    const pitch = (slideWidthRef.current || containerRef.current?.clientWidth || 1000) + SLIDE_GAP;
-    const max = maxScrollRef.current;
     const slides = trackRef.current?.querySelectorAll('.sw-slide');
-    const count = slides?.length || 3;
+    if (!slides || slides.length === 0) return [0];
+    const firstSlide = slides[0] as HTMLElement;
     const points: number[] = [];
-    for (let i = 0; i < count - 1; i++) {
-      points.push(i * pitch);
-    }
-    points.push(max);
-    return points;
+    slides.forEach((slide, idx) => {
+      const el = slide as HTMLElement;
+      if (idx === slides.length - 1) {
+        points.push(maxScrollRef.current);
+      } else {
+        points.push(Math.min(maxScrollRef.current, el.offsetLeft - firstSlide.offsetLeft));
+      }
+    });
+    return Array.from(new Set(points)).sort((a, b) => a - b);
   };
 
   // Next / Prev button logic: moves smoothly to the next or previous slide
@@ -223,11 +242,11 @@ export default function SelectedWork() {
     <section id="work" className="selected-work-section" ref={sectionRef}>
       <div className="lule-container" ref={containerRef}>
         {/* Section Header */}
-        <div className="selected-work-header" data-aos="fade-up">
+        <div className="selected-work-header">
           <div className="selected-work-title-group">
-            <span className="selected-work-tag">Selected Work</span>
-            <h2 className="selected-work-heading">Different needs. One clear, connected approach</h2>
-            <p className="selected-work-desc">
+            <span className="selected-work-tag" data-aos="fade-up" data-aos-delay="100">Selected Work</span>
+            <h2 className="selected-work-heading" data-aos="fade-up" data-aos-delay="200">Different needs. One clear, connected approach</h2>
+            <p className="selected-work-desc" data-aos="fade-up" data-aos-delay="300">
               Brand identity, websites, online stores, applications, presentations and marketing materials.
             </p>
           </div>
@@ -237,6 +256,7 @@ export default function SelectedWork() {
             className="selected-work-controls"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            data-aos="fade-up" data-aos-delay="400"
           >
             <button
               className="selected-work-btn"
@@ -266,6 +286,8 @@ export default function SelectedWork() {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        data-aos="fade-left"
+        data-aos-delay="500"
       >
         <div
           className="selected-work-grid-track"
@@ -348,6 +370,28 @@ export default function SelectedWork() {
               />
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Mobile Navigation Controls (Below Slider) */}
+      <div className="lule-container selected-work-controls-mobile-wrapper">
+        <div className="selected-work-controls selected-work-controls-mobile">
+          <button
+            className="selected-work-btn"
+            onClick={handlePrev}
+            disabled={offset <= 2}
+            aria-label="Previous work slide"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button
+            className="selected-work-btn"
+            onClick={handleNext}
+            disabled={maxScroll > 0 && offset >= maxScroll - 2}
+            aria-label="Next work slide"
+          >
+            <ChevronRight size={20} />
+          </button>
         </div>
       </div>
     </section>

@@ -22,11 +22,11 @@ export default function Hero() {
         />
       </div>
 
-      <div className="hero-content">
-        <h1 className="hero-headline" data-aos="fade-up">
+      <div className="hero-content" data-aos="fade-left">
+        <h1 className="hero-headline">
           <span className="brand-red">LULE</span> connects the right message with a distinctive brand to create a coherent experience.
         </h1>
-        <p className="hero-description" data-aos="fade-up" data-aos-delay="100">
+        <p className="hero-description">
           We create clear narratives and memorable brand identities across digital products, presentations and marketing materials, unified through cohesive design, from concept shaping through thoughtful implementation.
         </p>
         {/* <div data-aos="fade-up" data-aos-delay="200">

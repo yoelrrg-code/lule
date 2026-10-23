@@ -29,7 +29,7 @@ export default function Header() {
 
   return (
     <header className={`lule-header ${isScrolled ? 'is-scrolled' : ''} ${isMenuOpen ? 'menu-open' : ''}`}>
-      <div className="lule-container lule-header-inner">
+      <div className="lule-container lule-header-inner" data-aos="fade-down">
         <a href="#" className="lule-logo" aria-label="LULE Home" onClick={closeMenu}>
           <Image src="/logo.svg" alt="LULE Logo" width={80} height={80} priority />
         </a>

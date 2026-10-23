@@ -49,7 +49,7 @@ export function CaseStudiesContent() {
             <div
               key={item.tag}
               className={`case-study-card ${item.align === 'right' ? 'is-right' : ''}`}
-              data-aos="fade-up"
+              data-aos={`${item.align === 'right' ? 'fade-right' : 'fade-left'}`}
               data-aos-delay={index * 100}
             >
               <div className="case-study-card-content">

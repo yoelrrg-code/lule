@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import './globals.css';
 import AOSInit from '@/components/AOSInit';
+import ContentProtection from '@/components/ContentProtection';
 
 const geist = Geist({
   subsets: ['latin'],
@@ -23,6 +24,7 @@ export default function RootLayout({
     <html lang="en" className={geist.variable}>
       <body className={geist.className}>
         <AOSInit />
+        <ContentProtection />
         {children}
       </body>
     </html>

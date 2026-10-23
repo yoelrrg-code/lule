@@ -4,12 +4,12 @@ import React from 'react';
 export default function Capabilities() {
   return (
     <section className="capabilities-section" id="capabilities">
-      <div className="lule-container">
-        <span className="section-tag" data-aos="fade-up">Capabilities</span>
-        <h2 className="section-title" data-aos="fade-up" data-aos-delay="100">
+      <div className="lule-container" data-aos="fade-up">
+        <span className="section-tag">Capabilities</span>
+        <h2 className="section-title">
           Connecting message, brand and experience
         </h2>
-        <p className="capabilities-description" data-aos="fade-up" data-aos-delay="150">
+        <p className="capabilities-description">
           We shape clear narratives and visual direction across everything we create, from brand identities and digital products to presentations and marketing materials, bringing the same thinking from concept through implementation.
         </p>
 
