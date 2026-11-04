@@ -5,8 +5,8 @@ export default function Capabilities() {
   return (
     <section className="capabilities-section" id="capabilities">
       <div className="lule-container" data-aos="fade-up">
-        <span className="section-tag">Capabilities</span>
-        <h2 className="section-title">
+        <span className="section-tag capabilities-title">Capabilities</span>
+        <h2 className="section-title capabilities-title">
           Connecting message, brand and experience
         </h2>
         <p className="capabilities-description">
@@ -18,7 +18,7 @@ export default function Capabilities() {
           <div className="capability-card" data-aos="fade-up" data-aos-delay="100">
             <div className="capability-icon">
               <Image
-                src="/cap1.svg"
+                src="/C1.svg"
                 width={83}
                 height={72}
                 alt="capability 1"
@@ -34,7 +34,7 @@ export default function Capabilities() {
           <div className="capability-card" data-aos="fade-up" data-aos-delay="200">
             <div className="capability-icon">
               <Image
-                src="/cap2.svg"
+                src="/C2.svg"
                 width={76}
                 height={72}
                 alt="capability 2"
@@ -50,7 +50,7 @@ export default function Capabilities() {
           <div className="capability-card" data-aos="fade-up" data-aos-delay="300">
             <div className="capability-icon">
               <Image
-                src="/cap3.svg"
+                src="/C3.svg"
                 width={73}
                 height={72}
                 alt="capability 3"

@@ -1,397 +1,264 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const SLIDE_GAP = 24;
+// ============================================================================
+// CONFIGURACIÓN DE TIEMPOS DE TRANSICIÓN (en milisegundos)
+// Cambia estos valores para ajustar cada cuánto tiempo rotan las imágenes
+// de cada subsección y cuánto dura el efecto de transición.
+// ============================================================================
+export const SUBSECTION_TIMINGS = {
+  websites: 4000,           // Tiempo entre imágenes en "Websites" (ms)
+  brandIdentity: 3500,      // Tiempo entre imágenes en "Brand Identity" (ms)
+  applications: 4500,       // Tiempo entre imágenes en "Applications" (ms)
+  onlineStores: 4200,       // Tiempo entre imágenes en "Online Stores" (ms)
+  presentations: 4800,      // Tiempo entre imágenes en "Presentations" (ms)
+  marketingMaterials: 3800, // Tiempo entre imágenes en "Marketing Materials" (ms)
+};
 
-export default function SelectedWork() {
-  const [offset, setOffset] = useState(0);
-  const [maxScroll, setMaxScroll] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+// Duración del efecto visual de transición entre imágenes (en milisegundos)
+export const TRANSITION_DURATION_MS = 900;
 
-  const sectionRef = useRef<HTMLElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const animFrameRef = useRef<number | null>(null);
+// ============================================================================
+// CONFIGURACIÓN DE SUBSECCIONES E IMÁGENES
+// Cada "slot" admite múltiples imágenes que rotarán automáticamente según el
+// tiempo configurado arriba para su subsección.
+// ============================================================================
+export interface WorkSlotConfig {
+  images: string[];
+  alt: string;
+}
 
-  const offsetRef = useRef(0);
-  const maxScrollRef = useRef(0);
-  const slideWidthRef = useRef(0);
-  const targetOffsetRef = useRef<number | null>(null);
-  const isAnimatingToTargetRef = useRef(false);
-  const stepRef = useRef<() => void>(() => {});
+export interface WorkSubsectionConfig {
+  id: string;
+  title: string;
+  description: string;
+  layout: 'single' | 'grid-2x2' | 'grid-2-col-portrait';
+  intervalMs: number;
+  slots: WorkSlotConfig[];
+}
 
-  // Sync refs with state
-  offsetRef.current = offset;
-  maxScrollRef.current = maxScroll;
-
-  // Calculate slide dimensions and maximum scroll distance so the last slide centers in the container
-  const calculateMetrics = useCallback(() => {
-    if (!trackRef.current || !containerRef.current) return;
-    const containerWidth = containerRef.current.clientWidth;
-
-    const slides = trackRef.current.querySelectorAll('.sw-slide');
-    if (slides.length === 0) return;
-
-    const firstSlide = slides[0] as HTMLElement;
-    const slideWidth = firstSlide.offsetWidth;
-    slideWidthRef.current = slideWidth;
-
-    const lastSlideIndex = slides.length - 1;
-    const lastSlide = slides[lastSlideIndex] as HTMLElement;
-    const lastSlideWidth = lastSlide.offsetWidth;
-
-    // The starting position of the last slide along the track content
-    const lastSlideStart = lastSlide.offsetLeft - firstSlide.offsetLeft;
-
-    let calculatedMax: number;
-    const isMobile = window.innerWidth < 768;
-
-    if (isMobile) {
-      const containerStyle = window.getComputedStyle(containerRef.current);
-      const paddingRight = parseFloat(containerStyle.paddingRight) || 0;
-      const containerRight = containerRef.current.getBoundingClientRect().right - paddingRight;
-      const lastSlideRight = lastSlide.offsetLeft + lastSlide.offsetWidth;
-      calculatedMax = Math.max(0, lastSlideRight - containerRight);
-    } else {
-      // Desktop: center the last slide precisely within the container when reaching the end
-      calculatedMax = Math.max(
-        0,
-        containerWidth > lastSlideWidth
-          ? lastSlideStart - (containerWidth - lastSlideWidth) / 2
-          : lastSlideStart
-      );
-    }
-
-    setMaxScroll(calculatedMax);
-    maxScrollRef.current = calculatedMax;
-  }, []);
-
-  useEffect(() => {
-    calculateMetrics();
-    window.addEventListener('resize', calculateMetrics);
-    return () => window.removeEventListener('resize', calculateMetrics);
-  }, [calculateMetrics]);
-
-  // Observer to trigger auto-scroll only when visible on screen
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          setIsVisible(entry.isIntersecting);
-        });
+export const SELECTED_WORK_SECTIONS: WorkSubsectionConfig[] = [
+  {
+    id: 'websites',
+    title: 'WEBSITES',
+    description:
+      'Clear, responsive websites where messaging, usability and structure come together through good design.',
+    layout: 'single',
+    intervalMs: SUBSECTION_TIMINGS.websites,
+    slots: [
+      {
+        images: ['/works/websites-1.jpg', '/works/stores-1.jpg'],
+        alt: 'Websites showcase',
       },
-      { threshold: 0.15 }
-    );
+    ],
+  },
+  {
+    id: 'brand-identity',
+    title: 'BRAND IDENTITY',
+    description:
+      'Visual identities designed to communicate clearly and work consistently across digital and physical touchpoints.',
+    layout: 'grid-2x2',
+    intervalMs: SUBSECTION_TIMINGS.brandIdentity,
+    slots: [
+      {
+        images: ['/works/brand-1.jpg', '/works/brand-2.jpg', '/works/brand-3.jpg', '/works/brand-4.jpg'],
+        alt: 'Brand Identity showcase 1',
+      },
+      {
+        images: ['/works/brand-2.jpg', '/works/brand-1.jpg', '/works/brand-4.jpg', '/works/brand-3.jpg'],
+        alt: 'Brand Identity showcase 2',
+      },
+      {
+        images: ['/works/brand-3.jpg', '/works/brand-4.jpg', '/works/brand-1.jpg', '/works/brand-2.jpg'],
+        alt: 'Brand Identity showcase 3',
+      },
+      {
+        images: ['/works/brand-4.jpg', '/works/brand-3.jpg', '/works/brand-2.jpg', '/works/brand-1.jpg'],
+        alt: 'Brand Identity showcase 4',
+      },
+    ],
+  },
+  {
+    id: 'applications',
+    title: 'APPLICATIONS',
+    description:
+      'User interfaces where product, brand, usability and design come together to create clear digital experiences.',
+    layout: 'single',
+    intervalMs: SUBSECTION_TIMINGS.applications,
+    slots: [
+      {
+        images: ['/works/app-1.jpg', '/works/stores-1.jpg'],
+        alt: 'Applications showcase',
+      },
+    ],
+  },
+  {
+    id: 'online-stores',
+    title: 'ONLINE STORES',
+    description:
+      'Branded shopping experiences designed to connect products, brand and customer experience.',
+    layout: 'single',
+    intervalMs: SUBSECTION_TIMINGS.onlineStores,
+    slots: [
+      {
+        images: ['/works/stores-1.jpg', '/works/app-1.jpg'],
+        alt: 'Online Stores showcase',
+      },
+    ],
+  },
+  {
+    id: 'presentations',
+    title: 'PRESENTATIONS',
+    description:
+      'Clear narratives and strong visual systems for executive, sales and business presentations.',
+    layout: 'single',
+    intervalMs: SUBSECTION_TIMINGS.presentations,
+    slots: [
+      {
+        images: [
+          '/works/presentation-1.jpg',
+          '/works/presentation-2.jpg',
+          '/works/presentation-3.jpg',
+          '/works/presentation-4.jpg',
+          '/works/presentation-5.jpg',
+          '/works/presentation-6.jpg',
+        ],
+        alt: 'Presentations showcase',
+      },
+    ],
+  },
+  {
+    id: 'marketing-materials',
+    title: 'MARKETING MATERIALS',
+    description:
+      'Branded assets that extend the identity across digital and physical communication, from social content to print pieces.',
+    layout: 'grid-2-col-portrait',
+    intervalMs: SUBSECTION_TIMINGS.marketingMaterials,
+    slots: [
+      {
+        images: ['/works/marketing-1.jpg', '/works/marketing-2.jpg'],
+        alt: 'Marketing Materials showcase 1',
+      },
+      {
+        images: ['/works/marketing-2.jpg', '/works/marketing-1.jpg'],
+        alt: 'Marketing Materials showcase 2',
+      },
+    ],
+  },
+];
 
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+interface WorkImageSlotProps {
+  images: string[];
+  alt: string;
+  intervalMs: number;
+  priority?: boolean;
+}
 
-  // Continuous animation loop (slow auto-scroll + smooth programmatic snapping)
+function WorkImageSlot({ images, alt, intervalMs, priority = false }: WorkImageSlotProps) {
+  const [{ activeIndex, leavingIndex }, setSlideState] = useState<{
+    activeIndex: number;
+    leavingIndex: number | null;
+  }>({
+    activeIndex: 0,
+    leavingIndex: null,
+  });
+
   useEffect(() => {
-    const speed = 0.250; // 10% slower than 0.55 for smoother motion
+    if (!images || images.length <= 1 || intervalMs <= 0) return;
 
-    const step = () => {
-      // 1. Programmatic smooth transition towards a target slide
-      if (isAnimatingToTargetRef.current && targetOffsetRef.current !== null) {
-        const diff = targetOffsetRef.current - offsetRef.current;
-        if (Math.abs(diff) < 0.6) {
-          offsetRef.current = targetOffsetRef.current;
-          setOffset(targetOffsetRef.current);
-          isAnimatingToTargetRef.current = false;
-          targetOffsetRef.current = null;
-        } else {
-          const stepDelta = diff * 0.12;
-          const clamped = Math.abs(stepDelta) < 1 ? Math.sign(diff) * 1 : stepDelta;
-          const next = offsetRef.current + clamped;
-          offsetRef.current = next;
-          setOffset(next);
-        }
-        animFrameRef.current = requestAnimationFrame(step);
-        return;
-      }
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
-      // 2. Slow continuous scroll when visible and not hovered
-      if (isVisible && !isHovered) {
-        const current = offsetRef.current;
-        const max = maxScrollRef.current;
-        if (max > 0 && current < max) {
-          const next = Math.min(max, current + speed);
-          offsetRef.current = next;
-          setOffset(next);
-          animFrameRef.current = requestAnimationFrame(step);
-        } else {
-          // Reached the end, pause loop until woken up by handlePrev / touch / resize
-          animFrameRef.current = null;
-        }
-      } else {
-        // Paused or not visible
-        animFrameRef.current = null;
-      }
-    };
+    const timer = setInterval(() => {
+      setSlideState((prev) => ({
+        activeIndex: (prev.activeIndex + 1) % images.length,
+        leavingIndex: prev.activeIndex,
+      }));
 
-    stepRef.current = step;
-
-    if (isVisible || isAnimatingToTargetRef.current) {
-      if (animFrameRef.current) {
-        cancelAnimationFrame(animFrameRef.current);
-      }
-      animFrameRef.current = requestAnimationFrame(step);
-    }
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setSlideState((prev) => ({
+          ...prev,
+          leavingIndex: null,
+        }));
+      }, TRANSITION_DURATION_MS);
+    }, intervalMs);
 
     return () => {
-      if (animFrameRef.current) {
-        cancelAnimationFrame(animFrameRef.current);
-        animFrameRef.current = null;
-      }
+      clearInterval(timer);
+      if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [isVisible, isHovered, maxScroll]);
-
-  // Programmatically trigger a smooth slide transition to a target offset
-  const animateTo = (target: number) => {
-    targetOffsetRef.current = target;
-    isAnimatingToTargetRef.current = true;
-    if (animFrameRef.current) {
-      cancelAnimationFrame(animFrameRef.current);
-    }
-    animFrameRef.current = requestAnimationFrame(() => {
-      stepRef.current();
-    });
-  };
-
-  // Determine snap positions for each slide ([0, offset1, ..., max])
-  const getSnapPoints = () => {
-    const slides = trackRef.current?.querySelectorAll('.sw-slide');
-    if (!slides || slides.length === 0) return [0];
-    const firstSlide = slides[0] as HTMLElement;
-    const points: number[] = [];
-    slides.forEach((slide, idx) => {
-      const el = slide as HTMLElement;
-      if (idx === slides.length - 1) {
-        points.push(maxScrollRef.current);
-      } else {
-        points.push(Math.min(maxScrollRef.current, el.offsetLeft - firstSlide.offsetLeft));
-      }
-    });
-    return Array.from(new Set(points)).sort((a, b) => a - b);
-  };
-
-  // Next / Prev button logic: moves smoothly to the next or previous slide
-  const handleNext = () => {
-    const current = offsetRef.current;
-    const snapPoints = getSnapPoints();
-    const nextTarget = snapPoints.find((pt) => pt > current + 5);
-
-    if (nextTarget !== undefined) {
-      animateTo(nextTarget);
-    } else {
-      animateTo(snapPoints[snapPoints.length - 1]);
-    }
-  };
-
-  const handlePrev = () => {
-    const current = offsetRef.current;
-    const snapPoints = getSnapPoints();
-    const prevPoints = snapPoints.filter((pt) => pt < current - 5);
-
-    if (prevPoints.length > 0) {
-      animateTo(prevPoints[prevPoints.length - 1]);
-    } else {
-      animateTo(0);
-    }
-  };
-
-  // Touch swipe support for mobile devices
-  const touchStartXRef = useRef<number | null>(null);
-  const touchStartOffsetRef = useRef<number>(0);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    isAnimatingToTargetRef.current = false;
-    targetOffsetRef.current = null;
-    touchStartXRef.current = e.touches[0].clientX;
-    touchStartOffsetRef.current = offsetRef.current;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (touchStartXRef.current === null) return;
-    const deltaX = touchStartXRef.current - e.touches[0].clientX;
-    const max = maxScrollRef.current;
-    const newOffset = Math.max(0, Math.min(max, touchStartOffsetRef.current + deltaX));
-    offsetRef.current = newOffset;
-    setOffset(newOffset);
-  };
-
-  const handleTouchEnd = () => {
-    touchStartXRef.current = null;
-    if (animFrameRef.current) {
-      cancelAnimationFrame(animFrameRef.current);
-    }
-    animFrameRef.current = requestAnimationFrame(() => {
-      stepRef.current();
-    });
-  };
+  }, [images, intervalMs]);
 
   return (
-    <section id="work" className="selected-work-section" ref={sectionRef}>
-      <div className="lule-container" ref={containerRef}>
+    <div className="sw-image-slot image-radius">
+      {images.map((src, idx) => {
+        const isActive = idx === activeIndex;
+        const isLeaving = idx === leavingIndex && !isActive;
+        return (
+          <Image
+            key={`${src}-${idx}`}
+            src={src}
+            alt={`${alt} - ${idx + 1}`}
+            fill
+            sizes="(max-width: 768px) 100vw, 1180px"
+            priority={priority && idx === 0}
+            className={`sw-slot-img ${isActive ? 'is-active' : ''} ${isLeaving ? 'is-leaving' : ''}`}
+            style={{
+              transitionDuration: `${TRANSITION_DURATION_MS}ms`,
+              animationDuration: `${intervalMs + TRANSITION_DURATION_MS}ms`,
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+export default function SelectedWork() {
+  return (
+    <section id="work" className="selected-work-section">
+      <div className="lule-container">
         {/* Section Header */}
         <div className="selected-work-header">
           <div className="selected-work-title-group">
-            <span className="selected-work-tag" data-aos="fade-up" data-aos-delay="100">Selected Work</span>
-            <h2 className="selected-work-heading" data-aos="fade-up" data-aos-delay="200">Different needs. One clear, connected approach</h2>
-            <p className="selected-work-desc" data-aos="fade-up" data-aos-delay="300">
-              Brand identity, websites, online stores, applications, presentations and marketing materials.
-            </p>
-          </div>
-
-          {/* Navigation Controls (Top Right) */}
-          <div
-            className="selected-work-controls"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            data-aos="fade-up" data-aos-delay="400"
-          >
-            <button
-              className="selected-work-btn"
-              onClick={handlePrev}
-              disabled={offset <= 2}
-              aria-label="Previous work slide"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <button
-              className="selected-work-btn"
-              onClick={handleNext}
-              disabled={maxScroll > 0 && offset >= maxScroll - 2}
-              aria-label="Next work slide"
-            >
-              <ChevronRight size={20} />
-            </button>
+            <span className="selected-work-tag" data-aos="fade-up" data-aos-delay="100">
+              Selected Work
+            </span>
+            <h2 className="selected-work-heading" data-aos="fade-up" data-aos-delay="200">
+              Different needs. One clear, connected approach
+            </h2>
           </div>
         </div>
-      </div>
 
-      {/* Horizontal Grid Slider */}
-      <div
-        className="selected-work-slider-viewport"
-        // onMouseEnter={() => setIsHovered(true)}
-        // onMouseLeave={() => setIsHovered(false)}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        data-aos="fade-left"
-        data-aos-delay="500"
-      >
-        <div
-          className="selected-work-grid-track"
-          ref={trackRef}
-          style={{
-            transform: `translate3d(-${offset}px, 0, 0)`,
-          }}
-        >
-          {/* SLIDE 1: 2 columns (60% / 40%), Column 2 has 2 stacked rows */}
-          <div className="sw-slide">
-            <div className="sw-col-60">
-              <Image
-                src="/slide-1.jpg"
-                width={1752}
-                height={1150}
-                alt="Selected Work Slide 1"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                priority
-                className='image-radius'
-              />
-            </div>
-            <div className="sw-col-40 sw-col-stacked">
-              <div className="sw-stacked-row">
-                <Image
-                  src="/slide-2.jpg"
-                  width={1000}
-                  height={670}
-                  alt="Selected Work Slide 2"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  className='image-radius'
-                />
+        {/* Vertical Subsections Grid */}
+        <div className="selected-work-list">
+          {SELECTED_WORK_SECTIONS.map((subsection, sectionIdx) => (
+            <div
+              key={subsection.id}
+              className="sw-subsection"
+              data-aos="fade-up"
+              data-aos-delay="150"
+            >
+              <div className={`sw-media-grid sw-layout-${subsection.layout}`}>
+                {subsection.slots.map((slot, slotIdx) => (
+                  <WorkImageSlot
+                    key={`${subsection.id}-slot-${slotIdx}`}
+                    images={slot.images}
+                    alt={slot.alt}
+                    intervalMs={subsection.intervalMs}
+                    priority={sectionIdx === 0 && slotIdx === 0}
+                  />
+                ))}
               </div>
-              <div className="sw-stacked-row">
-                <Image
-                  src="/slide-3.jpg"
-                  width={1000}
-                  height={670}
-                  alt="Selected Work Slide 3"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  className='image-radius'
-                />
+
+              <div className="sw-caption">
+                <span className="sw-item-tag">{subsection.title}</span>
+                <p className="sw-item-desc">{subsection.description}</p>
               </div>
             </div>
-          </div>
-
-          {/* SLIDE 2: 2 columns (60% / 40%) */}
-          <div className="sw-slide">
-            <div className="sw-col-60">
-              <Image
-                src="/slide-4.jpg"
-                width={1288}
-                height={1288}
-                alt="Selected Work Slide 4"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                className='image-radius'
-              />
-            </div>
-            <div className="sw-col-40">
-              <Image
-                src="/slide-5.jpg"
-                width={380}
-                height={644}
-                alt="Selected Work Slide 5"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                className='image-radius'
-              />
-            </div>
-          </div>
-
-          {/* SLIDE 3: 100% width with slide-6.jpg */}
-          <div className="sw-slide sw-slide-full">
-            <div className="sw-col-100">
-              <Image
-                src="/slide-6.jpg"
-                width={1758}
-                height={1148}
-                alt="Selected Work Slide 6"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                className='image-radius'
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Navigation Controls (Below Slider) */}
-      <div className="lule-container selected-work-controls-mobile-wrapper">
-        <div className="selected-work-controls selected-work-controls-mobile">
-          <button
-            className="selected-work-btn"
-            onClick={handlePrev}
-            disabled={offset <= 2}
-            aria-label="Previous work slide"
-          >
-            <ChevronLeft size={20} />
-          </button>
-          <button
-            className="selected-work-btn"
-            onClick={handleNext}
-            disabled={maxScroll > 0 && offset >= maxScroll - 2}
-            aria-label="Next work slide"
-          >
-            <ChevronRight size={20} />
-          </button>
+          ))}
         </div>
       </div>
     </section>

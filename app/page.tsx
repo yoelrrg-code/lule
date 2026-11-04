@@ -4,6 +4,7 @@ import SelectedWork from '@/components/SelectedWork';
 import GoodWork from '@/components/GoodWork';
 import { CaseStudiesContent } from '@/components/CaseStudies';
 import Capabilities from '@/components/Capabilities';
+import Testimonials from '@/components/Testimonials';
 import About from '@/components/About';
 import ConversationCTA from '@/components/ConversationCTA';
 import Footer from '@/components/Footer';
@@ -30,10 +31,13 @@ export default function Home() {
       </div>
 
       {/* Case Studies */}
-      <CaseStudiesContent />
+      {/* <CaseStudiesContent /> */}
 
       {/* Capabilities */}
       <Capabilities />
+
+      {/* Testimonials */}
+      <Testimonials />
 
       {/* About */}
       <About />
