@@ -24,7 +24,7 @@ export default function Home() {
       <SelectedWork />
 
       {/* Good Work Section */}
-      <div className="upper-gradient-wrapper">
+      <div style={{ display: 'none' }} className="upper-gradient-wrapper">
         <div className="lule-container">
           <GoodWork />
         </div>

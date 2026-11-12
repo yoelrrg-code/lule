@@ -1,201 +1,85 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 
 // ============================================================================
-// CONFIGURACIÓN DE TIEMPOS DE TRANSICIÓN (en milisegundos)
-// Cambia estos valores para ajustar cada cuánto tiempo rotan las imágenes
-// de cada subsección y cuánto dura el efecto de transición.
+// CONFIGURACIÓN DE TIEMPOS, LOOP E IMÁGENES DE "SELECTED COLLABORATIONS"
 // ============================================================================
-export const SUBSECTION_TIMINGS = {
-  websites: 4000,           // Tiempo entre imágenes en "Websites" (ms)
-  brandIdentity: 3500,      // Tiempo entre imágenes en "Brand Identity" (ms)
-  applications: 4500,       // Tiempo entre imágenes en "Applications" (ms)
-  onlineStores: 4200,       // Tiempo entre imágenes en "Online Stores" (ms)
-  presentations: 4800,      // Tiempo entre imágenes en "Presentations" (ms)
-  marketingMaterials: 3800, // Tiempo entre imágenes en "Marketing Materials" (ms)
-};
 
-// Duración del efecto visual de transición entre imágenes (en milisegundos)
-export const TRANSITION_DURATION_MS = 900;
+// Tiempo entre cada cambio de imagen (fade-in / fade-out) en PC y Precise MDX (3s)
+export const FADE_INTERVAL_MS = 3000;
 
-// ============================================================================
-// CONFIGURACIÓN DE SUBSECCIONES E IMÁGENES
-// Cada "slot" admite múltiples imágenes que rotarán automáticamente según el
-// tiempo configurado arriba para su subsección.
-// ============================================================================
-export interface WorkSlotConfig {
-  images: string[];
-  alt: string;
-}
+// Duración visual del efecto fade-in / fade-out (en milisegundos)
+export const FADE_DURATION_MS = 800;
 
-export interface WorkSubsectionConfig {
-  id: string;
-  title: string;
-  description: string;
-  layout: 'single' | 'grid-2x2' | 'grid-2-col-portrait';
-  intervalMs: number;
-  slots: WorkSlotConfig[];
-}
+// Bandera para el carrusel de Softtek:
+// - true:  Carrusel en loop infinito continuo de derecha a izquierda.
+// - false: El carrusel avanza de derecha a izquierda y se detiene cuando la
+//          última imagen queda completamente visible en pantalla.
+export const SOFTTEK_CAROUSEL_LOOP = true;
 
-export const SELECTED_WORK_SECTIONS: WorkSubsectionConfig[] = [
-  {
-    id: 'websites',
-    title: 'WEBSITES',
-    description:
-      'Clear, responsive websites where messaging, usability and structure come together through good design.',
-    layout: 'single',
-    intervalMs: SUBSECTION_TIMINGS.websites,
-    slots: [
-      {
-        images: ['/works/websites-1.jpg', '/works/stores-1.jpg'],
-        alt: 'Websites showcase',
-      },
-    ],
-  },
-  {
-    id: 'brand-identity',
-    title: 'BRAND IDENTITY',
-    description:
-      'Visual identities designed to communicate clearly and work consistently across digital and physical touchpoints.',
-    layout: 'grid-2x2',
-    intervalMs: SUBSECTION_TIMINGS.brandIdentity,
-    slots: [
-      {
-        images: ['/works/brand-1.jpg', '/works/brand-2.jpg', '/works/brand-3.jpg', '/works/brand-4.jpg'],
-        alt: 'Brand Identity showcase 1',
-      },
-      {
-        images: ['/works/brand-2.jpg', '/works/brand-1.jpg', '/works/brand-4.jpg', '/works/brand-3.jpg'],
-        alt: 'Brand Identity showcase 2',
-      },
-      {
-        images: ['/works/brand-3.jpg', '/works/brand-4.jpg', '/works/brand-1.jpg', '/works/brand-2.jpg'],
-        alt: 'Brand Identity showcase 3',
-      },
-      {
-        images: ['/works/brand-4.jpg', '/works/brand-3.jpg', '/works/brand-2.jpg', '/works/brand-1.jpg'],
-        alt: 'Brand Identity showcase 4',
-      },
-    ],
-  },
-  {
-    id: 'applications',
-    title: 'APPLICATIONS',
-    description:
-      'User interfaces where product, brand, usability and design come together to create clear digital experiences.',
-    layout: 'single',
-    intervalMs: SUBSECTION_TIMINGS.applications,
-    slots: [
-      {
-        images: ['/works/app-1.jpg', '/works/stores-1.jpg'],
-        alt: 'Applications showcase',
-      },
-    ],
-  },
-  {
-    id: 'online-stores',
-    title: 'ONLINE STORES',
-    description:
-      'Branded shopping experiences designed to connect products, brand and customer experience.',
-    layout: 'single',
-    intervalMs: SUBSECTION_TIMINGS.onlineStores,
-    slots: [
-      {
-        images: ['/works/stores-1.jpg', '/works/app-1.jpg'],
-        alt: 'Online Stores showcase',
-      },
-    ],
-  },
-  {
-    id: 'presentations',
-    title: 'PRESENTATIONS',
-    description:
-      'Clear narratives and strong visual systems for executive, sales and business presentations.',
-    layout: 'single',
-    intervalMs: SUBSECTION_TIMINGS.presentations,
-    slots: [
-      {
-        images: [
-          '/works/presentation-1.jpg',
-          '/works/presentation-2.jpg',
-          '/works/presentation-3.jpg',
-          '/works/presentation-4.jpg',
-          '/works/presentation-5.jpg',
-          '/works/presentation-6.jpg',
-        ],
-        alt: 'Presentations showcase',
-      },
-    ],
-  },
-  {
-    id: 'marketing-materials',
-    title: 'MARKETING MATERIALS',
-    description:
-      'Branded assets that extend the identity across digital and physical communication, from social content to print pieces.',
-    layout: 'grid-2-col-portrait',
-    intervalMs: SUBSECTION_TIMINGS.marketingMaterials,
-    slots: [
-      {
-        images: ['/works/marketing-1.jpg', '/works/marketing-2.jpg'],
-        alt: 'Marketing Materials showcase 1',
-      },
-      {
-        images: ['/works/marketing-2.jpg', '/works/marketing-1.jpg'],
-        alt: 'Marketing Materials showcase 2',
-      },
-    ],
-  },
+// Velocidad de desplazamiento del carrusel de Softtek (píxeles por frame)
+export const SOFTTEK_CAROUSEL_SPEED = 0.2;
+
+// Imágenes de la sección 1: PC / Revenue Cycle Management
+export const PC_IMAGES = [
+  '/works/PC-slide1.jpg',
+  '/works/PC-slide2.jpg',
+  '/works/PC-slide3.jpg',
+  '/works/PC-slide4.jpg',
 ];
 
-interface WorkImageSlotProps {
+// Imágenes de la sección 2: Precise MDX
+export const PRECISE_MDX_IMAGES = [
+  '/works/PMDX-Slide1.jpg',
+  '/works/PMDX-Slide2.jpg',
+  '/works/PMDX-Slide3.jpg',
+  '/works/PMDX-slide4.jpg',
+];
+
+// Imágenes de la sección 3: Softtek (Carrusel de presentaciones)
+export const SOFTTEK_IMAGES = [
+  '/works/presentation-1.jpg',
+  '/works/presentation-2.jpg',
+  '/works/presentation-3.jpg',
+  '/works/presentation-4.jpg',
+  '/works/presentation-5.jpg',
+  '/works/presentation-6.jpg',
+];
+
+interface FadeImageRotatorProps {
   images: string[];
   alt: string;
-  intervalMs: number;
+  intervalMs?: number;
+  topWhiteFade?: boolean;
   priority?: boolean;
 }
 
-function WorkImageSlot({ images, alt, intervalMs, priority = false }: WorkImageSlotProps) {
-  const [{ activeIndex, leavingIndex }, setSlideState] = useState<{
-    activeIndex: number;
-    leavingIndex: number | null;
-  }>({
-    activeIndex: 0,
-    leavingIndex: null,
-  });
+function FadeImageRotator({
+  images,
+  alt,
+  intervalMs = FADE_INTERVAL_MS,
+  topWhiteFade = false,
+  priority = false,
+}: FadeImageRotatorProps) {
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     if (!images || images.length <= 1 || intervalMs <= 0) return;
 
-    let timeoutId: ReturnType<typeof setTimeout> | null = null;
-
     const timer = setInterval(() => {
-      setSlideState((prev) => ({
-        activeIndex: (prev.activeIndex + 1) % images.length,
-        leavingIndex: prev.activeIndex,
-      }));
-
-      if (timeoutId) clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        setSlideState((prev) => ({
-          ...prev,
-          leavingIndex: null,
-        }));
-      }, TRANSITION_DURATION_MS);
+      setActiveIndex((prev) => (prev + 1) % images.length);
     }, intervalMs);
 
-    return () => {
-      clearInterval(timer);
-      if (timeoutId) clearTimeout(timeoutId);
-    };
+    return () => clearInterval(timer);
   }, [images, intervalMs]);
 
   return (
-    <div className="sw-image-slot image-radius">
+    <div className="sw-fade-rotator">
+      {topWhiteFade && <div className="sw-top-white-fade" aria-hidden="true" />}
       {images.map((src, idx) => {
         const isActive = idx === activeIndex;
-        const isLeaving = idx === leavingIndex && !isActive;
         return (
           <Image
             key={`${src}-${idx}`}
@@ -204,14 +88,118 @@ function WorkImageSlot({ images, alt, intervalMs, priority = false }: WorkImageS
             fill
             sizes="(max-width: 768px) 100vw, 1180px"
             priority={priority && idx === 0}
-            className={`sw-slot-img ${isActive ? 'is-active' : ''} ${isLeaving ? 'is-leaving' : ''}`}
+            className={`sw-fade-img ${isActive ? 'is-active' : ''}`}
             style={{
-              transitionDuration: `${TRANSITION_DURATION_MS}ms`,
-              animationDuration: `${intervalMs + TRANSITION_DURATION_MS}ms`,
+              transitionDuration: `${FADE_DURATION_MS}ms`,
             }}
           />
         );
       })}
+    </div>
+  );
+}
+
+interface SofttekCarouselProps {
+  images: string[];
+  loop?: boolean;
+  speed?: number;
+}
+
+function SofttekCarousel({
+  images,
+  loop = SOFTTEK_CAROUSEL_LOOP,
+  speed = SOFTTEK_CAROUSEL_SPEED,
+}: SofttekCarouselProps) {
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const offsetRef = useRef(0);
+  const isVisibleRef = useRef(true);
+
+  const renderedImages = loop ? [...images, ...images] : images;
+
+  useEffect(() => {
+    const viewportEl = viewportRef.current;
+    if (!viewportEl) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisibleRef.current = entry.isIntersecting;
+        });
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(viewportEl);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    let animFrameId: number | null = null;
+
+    const step = () => {
+      const viewportEl = viewportRef.current;
+      const trackEl = trackRef.current;
+
+      if (viewportEl && trackEl && isVisibleRef.current && images.length > 0) {
+        const slides = trackEl.querySelectorAll('.sw-softtek-slide');
+
+        if (slides.length > 0) {
+          if (loop && slides.length >= images.length * 2) {
+            const firstSlide = slides[0] as HTMLElement;
+            const secondSetStartSlide = slides[images.length] as HTMLElement;
+            const singleSetWidth = secondSetStartSlide.offsetLeft - firstSlide.offsetLeft;
+
+            if (singleSetWidth > 0) {
+              offsetRef.current += speed;
+              if (offsetRef.current >= singleSetWidth) {
+                offsetRef.current -= singleSetWidth;
+              }
+              trackEl.style.transform = `translate3d(-${offsetRef.current}px, 0, 0)`;
+            }
+          } else {
+            // Non-loop mode: stop when the last slide is fully visible inside the viewport
+            const lastSlide = slides[slides.length - 1] as HTMLElement;
+            const viewportStyle = window.getComputedStyle(viewportEl);
+            const padLeft = parseFloat(viewportStyle.paddingLeft) || 0;
+            const totalTrackWidthWithRightPad =
+              padLeft + lastSlide.offsetLeft + lastSlide.offsetWidth + padLeft;
+            const maxOffset = Math.max(0, totalTrackWidthWithRightPad - viewportEl.clientWidth);
+
+            if (offsetRef.current < maxOffset) {
+              offsetRef.current = Math.min(maxOffset, offsetRef.current + speed);
+              trackEl.style.transform = `translate3d(-${offsetRef.current}px, 0, 0)`;
+            }
+          }
+        }
+      }
+
+      animFrameId = requestAnimationFrame(step);
+    };
+
+    animFrameId = requestAnimationFrame(step);
+    return () => {
+      if (animFrameId !== null) {
+        cancelAnimationFrame(animFrameId);
+      }
+    };
+  }, [images.length, loop, speed]);
+
+  return (
+    <div className="sw-softtek-carousel-viewport" ref={viewportRef}>
+      <div className="sw-softtek-carousel-track" ref={trackRef}>
+        {renderedImages.map((src, idx) => (
+          <div key={`${src}-${idx}`} className="sw-softtek-slide">
+            <Image
+              src={src}
+              alt={`Softtek presentation slide ${(idx % images.length) + 1}`}
+              fill
+              sizes="(max-width: 768px) 85vw, 680px"
+              className="sw-softtek-img"
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -221,44 +209,112 @@ export default function SelectedWork() {
     <section id="work" className="selected-work-section">
       <div className="lule-container">
         {/* Section Header */}
-        <div className="selected-work-header">
-          <div className="selected-work-title-group">
-            <span className="selected-work-tag" data-aos="fade-up" data-aos-delay="100">
-              Selected Work
-            </span>
-            <h2 className="selected-work-heading" data-aos="fade-up" data-aos-delay="200">
-              Different needs. One clear, connected approach
+        <div className="selected-work-header-block">
+          <span className="selected-work-tag" data-aos="fade-up" data-aos-delay="100">
+            SELECTED COLLABORATIONS
+          </span>
+          <div className="selected-work-header">
+            <h2 className="selected-work-heading" data-aos="fade-up" data-aos-delay="150">
+              Our work starts with
+              <br />
+              understanding yours
             </h2>
+            <p className="selected-work-intro" data-aos="fade-up" data-aos-delay="200">
+              Every organization has different needs. We collaborate with marketing, product,
+              development and leadership teams to create and refine digital products and
+              experiences, develop or strengthen brand identities, and bring clarity to complex
+              communications.
+            </p>
           </div>
         </div>
 
-        {/* Vertical Subsections Grid */}
+        {/* 3 Collaboration Cards */}
         <div className="selected-work-list">
-          {SELECTED_WORK_SECTIONS.map((subsection, sectionIdx) => (
-            <div
-              key={subsection.id}
-              className="sw-subsection"
-              data-aos="fade-up"
-              data-aos-delay="150"
-            >
-              <div className={`sw-media-grid sw-layout-${subsection.layout}`}>
-                {subsection.slots.map((slot, slotIdx) => (
-                  <WorkImageSlot
-                    key={`${subsection.id}-slot-${slotIdx}`}
-                    images={slot.images}
-                    alt={slot.alt}
-                    intervalMs={subsection.intervalMs}
-                    priority={sectionIdx === 0 && slotIdx === 0}
-                  />
-                ))}
-              </div>
-
-              <div className="sw-caption">
-                <span className="sw-item-tag">{subsection.title}</span>
-                <p className="sw-item-desc">{subsection.description}</p>
-              </div>
+          {/* CARD 1: PC / Revenue Cycle Management */}
+          <article className="sw-collab-card" data-aos="fade-up" data-aos-delay="150">
+            <div className="sw-collab-top">
+              <span className="sw-collab-pill sw-pill-pc">PC / Revenue Cycle Management</span>
+              <h3 className="sw-collab-title">A new name. A transformed identity.</h3>
+              <p className="sw-collab-desc">
+                Founded in 1989, Physicians Choice was ready for a new brand identity. We helped
+                transform the brand into PC, developing a refreshed visual identity and extending it
+                across digital and print applications, including its website, business cards,
+                handouts, and trade show booth graphics.
+              </p>
+              <a href="#contact" className="sw-collab-link">
+                <span>View case study</span>
+                <span className="sw-collab-arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
             </div>
-          ))}
+
+            <FadeImageRotator
+              images={PC_IMAGES}
+              alt="PC Revenue Cycle Management showcase"
+              priority
+            />
+          </article>
+
+          {/* CARD 2: Precise MDX */}
+          <article className="sw-collab-card" data-aos="fade-up" data-aos-delay="150">
+            <div className="sw-collab-top">
+              <span className="sw-collab-pill sw-pill-pmdx">Precise MDX</span>
+              <h3 className="sw-collab-title">From interface design to brand transformation</h3>
+              <p className="sw-collab-desc">
+                Our collaboration began with UI design for PreciseMDX&apos;s healthcare applications
+                and grew into a broader creative partnership. We redesigned the PreciseQ brand,
+                later developed the new identity for PreciseMDX, and expanded our work to include
+                website design and marketing materials.
+              </p>
+              <a href="#contact" className="sw-collab-link">
+                <span>View case study</span>
+                <span className="sw-collab-arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </div>
+
+            <FadeImageRotator
+              images={PRECISE_MDX_IMAGES}
+              alt="Precise MDX showcase"
+              priority
+            />
+          </article>
+
+          {/* CARD 3: Softtek */}
+          <article className="sw-collab-card" data-aos="fade-up" data-aos-delay="150">
+            <div className="sw-collab-top">
+              <span className="sw-collab-pill sw-pill-softtek">Softtek</span>
+              <h3 className="sw-collab-title">Shaping the story behind the slides.</h3>
+              <p className="sw-collab-desc">
+                Softtek&apos;s marketing team engaged us to develop executive presentations for
+                strategic projects and value propositions across its Insurance and Healthcare
+                business verticals. We help structure complex content, shape clear narratives, and
+                translate them into compelling presentations while working within Softtek&apos;s
+                established brand guidelines.
+              </p>
+              <a href="#contact" className="sw-collab-link">
+                <span>View case study</span>
+                <span className="sw-collab-arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </div>
+
+            <SofttekCarousel images={SOFTTEK_IMAGES} />
+          </article>
+        </div>
+
+        {/* Bottom Explore Block */}
+        <div className="sw-explore-more" data-aos="fade-up" data-aos-delay="150">
+          <h3 className="sw-explore-title">There&apos;s more to explore</h3>
+          <p className="sw-explore-subtitle">
+            Discover more of our work across different clients, industries, and disciplines.
+          </p>
+          <a href="#contact" className="sw-more-btn">
+            View more work
+          </a>
         </div>
       </div>
     </section>
